@@ -1,0 +1,23 @@
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py313"
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]  # error codes to check
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = 3.13
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_return_any = true
