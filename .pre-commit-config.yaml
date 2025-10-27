@@ -11,10 +11,15 @@ repos:
     rev: v0.6.5
     hooks:
       - id: ruff
-        args: [--fix]
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format  
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.1
     hooks:
       - id: mypy
         args: ["--strict", "src/document_processor.py"]
+        additional_dependencies:
+        - pydantic==2.11.9
+        - pandas==2.3.2.250827
+        - sqlalchemy[mypy]==2.0.44
