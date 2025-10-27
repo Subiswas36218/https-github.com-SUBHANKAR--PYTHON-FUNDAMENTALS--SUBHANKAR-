@@ -23,4 +23,4 @@ class User(NamedTuple):
         tags: list[str] = field(default_factory=list)
         
         
-        data_class_user=DataClassUser (id=2, name="Jane Doe", email=")
+        data_class_user=DataClassUser(user_id=2, username="Jane Doe", email="jane@example.com")
