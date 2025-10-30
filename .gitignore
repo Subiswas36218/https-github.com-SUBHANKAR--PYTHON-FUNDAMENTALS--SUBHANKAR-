@@ -4,3 +4,18 @@ venv/
 .ruff_cache/
 
 data/mariadb
+# Ignore MySQL and MariaDB data
+data/
+!data/*.sql
+
+# Ignore MongoDB data
+mongo_data/
+
+# Ignore general database logs
+*.ibd
+*.log
+*.lock
+*.wt
+*.turtle
+*.ibdata1
+
