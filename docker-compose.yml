@@ -10,3 +10,17 @@ services:
       - "3307:3306"
     volumes:
       - ./data:/var/lib/mysql
+
+  mongodb:
+    image: mongo:7.0
+    container_name: mongo_container
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: samindia
+      MONGO_INITDB_DATABASE: PythonDE
+
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo_data:/data/db
