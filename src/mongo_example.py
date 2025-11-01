@@ -15,7 +15,7 @@ users_col = client.PythonDE.users
 # Clean malformed documents (auto-fix and deduplicate)
 bad_docs = list(users_col.find({"0": {"$exists": True}}))
 if bad_docs:
-    print(f"⚠️ Found {len(bad_docs)} malformed document(s). Cleaning up...")
+    print(f"Found {len(bad_docs)} malformed document(s). Cleaning up...")
     for bad_doc in bad_docs:
         fixed_doc = bad_doc.get("0", {})
         if not fixed_doc:
@@ -25,10 +25,10 @@ if bad_docs:
         username = fixed_doc.get("username")
         # Check if a valid doc with same username already exists
         if username and users_col.find_one({"username": username, "0": {"$exists": False}}):
-            print(f"🟡 Duplicate username '{username}' found. Removing malformed document.")
+            print(f"Duplicate username '{username}' found. Removing malformed document.")
             users_col.delete_one({"_id": bad_doc["_id"]})
         else:
-            print(f"🛠 Fixing malformed document for user '{username}'.")
+            print(f"Fixing malformed document for user '{username}'.")
             users_col.update_one(
                 {"_id": bad_doc["_id"]},
                 {"$set": fixed_doc, "$unset": {"0": ""}}
@@ -100,6 +100,6 @@ try:
     for user in User.objects():
         print(user.to_json())
 except (FieldDoesNotExist, ValidationError) as e:
-    print("⚠️ Skipped malformed document:", e)
+    print("Skipped malformed document:", e)
 except Exception as e:
     print("Unexpected error:", e)
