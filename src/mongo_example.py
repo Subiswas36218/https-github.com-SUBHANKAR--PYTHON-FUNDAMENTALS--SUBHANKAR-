@@ -1,15 +1,21 @@
 from pymongo import MongoClient, errors
 from mongoengine import (
-    Document, StringField, IntField,
-    EmbeddedDocument, EmbeddedDocumentField,
-    DateTimeField, connect, ListField, EmbeddedDocumentListField
+    Document, 
+    StringField, 
+    IntField,
+    EmbeddedDocument, 
+    EmbeddedDocumentField,
+    DateTimeField, 
+    connect, 
+    ListField, 
+    EmbeddedDocumentListField
 )
 from mongoengine.errors import FieldDoesNotExist, ValidationError
 from datetime import datetime
 
 MONGO_URL = "mongodb://root:samindia@localhost:27017/?authSource=admin"
 
-client: MongoClient = MongoClient(MONGO_URL)
+client = MongoClient(MONGO_URL)
 users_col = client.PythonDE.users
 
 # Clean malformed documents (auto-fix and deduplicate)
@@ -82,13 +88,13 @@ class Profile(EmbeddedDocument):
     city = StringField(max_length=100)
     interests = ListField(StringField())
 
-class User(Document):
+class User(Document): # Type: ignore[misc]
     meta = {
         'collection': 'users',
         'indexes': ['username', 'email']
     }
 
-    username = StringField(required=True, unique=True, max_length=50)
+    username = StringField(required=True, unique=True, max_length=50) # Type: ignore[misc]
     email = StringField(required=True, unique=True)
     profile = EmbeddedDocumentField(Profile)
     created_at = DateTimeField(default=datetime.utcnow)
