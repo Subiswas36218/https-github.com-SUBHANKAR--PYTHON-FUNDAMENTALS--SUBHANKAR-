@@ -1,3 +1,4 @@
+from typing import Any
 from pymongo import MongoClient, errors
 from mongoengine import (
     Document, 
@@ -15,7 +16,7 @@ from datetime import datetime
 
 MONGO_URL = "mongodb://root:samindia@localhost:27017/?authSource=admin"
 
-client: MongoClient[dict] = MongoClient(MONGO_URL)
+client: MongoClient[dict[str, Any]] = MongoClient(MONGO_URL)
 users_col = client.PythonDE.users
 
 # Clean malformed documents (auto-fix and deduplicate)
