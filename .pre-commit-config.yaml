@@ -24,3 +24,4 @@ repos:
         - pandas==2.3.2.250827
         - sqlalchemy[mypy]==2.0.44
         - pymongo==4.15.3
+        - mongoengine==0.29.1
