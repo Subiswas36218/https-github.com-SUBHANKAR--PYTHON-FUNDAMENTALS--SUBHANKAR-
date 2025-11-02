@@ -15,7 +15,7 @@ from datetime import datetime
 
 MONGO_URL = "mongodb://root:samindia@localhost:27017/?authSource=admin"
 
-client = MongoClient(MONGO_URL)
+client: MongoClient[dict] = MongoClient(MONGO_URL)
 users_col = client.PythonDE.users
 
 # Clean malformed documents (auto-fix and deduplicate)
