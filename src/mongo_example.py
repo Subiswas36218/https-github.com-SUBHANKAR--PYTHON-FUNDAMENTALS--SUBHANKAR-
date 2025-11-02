@@ -105,7 +105,6 @@ result = User.objects
 for engine_user in result:
     print("MongoEngine User:", engine_user.username, engine_user.profile.city if engine_user.profile else "N/A")
 
-print("\nExisting users via MongoEngine:")
 try:
     for user in User.objects():
         print(user.to_json())
