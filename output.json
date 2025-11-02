@@ -1,0 +1,29 @@
+{
+    "files": [
+        {
+            "title": "Date File",
+            "text": "This is a JSON file containing recently edited files.",
+            "author": "Subhankar Biswas",
+            "id": 1,
+            "tags": [
+                "data",
+                "json",
+                "example"
+            ],
+            "is_active": true,
+            "comments": [
+                {
+                    "user": "Alice",
+                    "comment": "Great example of a JSON structure!",
+                    "timestamp": "2024-06-15T10:00:00Z"
+                },
+                {
+                    "user": "Bob",
+                    "comment": "Very informative.",
+                    "timestamp": "2024-06-16T12:30:00Z"
+                }
+            ]
+
+        }
+    ]
+}

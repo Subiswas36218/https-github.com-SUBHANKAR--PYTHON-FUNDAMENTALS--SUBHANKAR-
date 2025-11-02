@@ -4,6 +4,7 @@ venv/
 .ruff_cache/
 
 data/mariadb
+data/mongodb
 # Ignore MySQL and MariaDB data
 data/
 !data/*.sql
