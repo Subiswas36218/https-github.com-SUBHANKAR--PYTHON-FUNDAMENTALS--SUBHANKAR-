@@ -101,6 +101,9 @@ class User(Document): # Type: ignore[misc]
     created_at = DateTimeField(default=datetime.utcnow)
     orders = EmbeddedDocumentListField(Order)
 
+result = User.objects
+for engine_user in result:
+    print("MongoEngine User:", engine_user.username, engine_user.profile.city if engine_user.profile else "N/A")
 
 print("\nExisting users via MongoEngine:")
 try:
