@@ -24,13 +24,13 @@ class MongoUser(BaseModel):
     profile: Profile | None = None
     created_at: datetime | None = None  # Optional for missing timestamps
 
-    
-    @field_validator("id", mode="before")
+    model_config = {"populate_by_name": True}  # NEW LINE
+
+    @field_validator("created_at", mode="before")
     @classmethod
-    def convert_objectid(cls, v: Any) -> str:
-        if isinstance(v, ObjectId):
-            return str(v)
-        return v
+    def validate_created_at(cls, v: Any) -> str | None:
+        return v.isoformat() if isinstance(v, datetime) else v
+
 
     
     @field_validator("created_at", mode="before")
