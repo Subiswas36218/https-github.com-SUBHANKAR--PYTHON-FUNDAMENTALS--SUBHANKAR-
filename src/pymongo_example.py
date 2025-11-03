@@ -1,65 +1,78 @@
+import json
 from typing import Any
-from pymongo import MongoClient, errors
-
+from datetime import datetime
+from pydantic import BaseModel, Field, TypeAdapter, field_validator
+from bson import ObjectId
+from pymongo import MongoClient
 
 MONGO_URL = "mongodb://root:samindia@localhost:27017/?authSource=admin"
 
 client: MongoClient[dict[str, Any]] = MongoClient(MONGO_URL)
 users_col = client.PythonDE.users
 
-# Clean malformed documents (auto-fix and deduplicate)
-bad_docs = list(users_col.find({"0": {"$exists": True}}))
-if bad_docs:
-    print(f"Found {len(bad_docs)} malformed document(s). Cleaning up...")
-    for bad_doc in bad_docs:
-        fixed_doc = bad_doc.get("0", {})
-        if not fixed_doc:
-            users_col.delete_one({"_id": bad_doc["_id"]})
-            continue
 
-        username = fixed_doc.get("username")
-        # Check if a valid doc with same username already exists
-        if username and users_col.find_one({"username": username, "0": {"$exists": False}}):
-            print(f"Duplicate username '{username}' found. Removing malformed document.")
-            users_col.delete_one({"_id": bad_doc["_id"]})
-        else:
-            print(f"Fixing malformed document for user '{username}'.")
-            users_col.update_one(
-                {"_id": bad_doc["_id"]},
-                {"$set": fixed_doc, "$unset": {"0": ""}}
-            )
-    print("Cleanup completed.")
+class Profile(BaseModel):
+    age: int | None = None
+    city: str | None = None
+    interests: list[str] | None = None
 
 
-print("\nExisting users in MongoDB:")
-for user in users_col.find():
-    print(dict(user))
+class MongoUser(BaseModel):
+    id: str = Field(alias="_id")
+    username: str
+    email: str
+    profile: Profile | None = None
+    created_at: datetime | None = None  # Optional for missing timestamps
+
+    
+    @field_validator("id", mode="before")
+    @classmethod
+    def convert_objectid(cls, v: Any) -> str:
+        if isinstance(v, ObjectId):
+            return str(v)
+        return v
+
+    
+    @field_validator("created_at", mode="before")
+    @classmethod
+    def parse_created_at(cls, v: Any) -> datetime | None:
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v)
+            except ValueError:
+                return None
+        return v
 
 
-new_user = {
-    "username": "charlie",
-    "email": "charlie@example.com",
-    "profile": {
-        "age": 30,
-        "interests": ["hiking", "photography"]
-    },
-    "orders": [
-        {
-            "order_id": 1,
-            "product": "Camera",
-            "amount": 2000
-        }
-    ]
-}
+MongoUserList = TypeAdapter(list[MongoUser])
 
-try:
-    if users_col.find_one({"username": new_user["username"]}):
-        print(f"\nUser '{new_user['username']}' already exists. Skipping insert.")
-    else:
-        insert_result = users_col.insert_one(new_user)
-        print("Inserted user ID:", insert_result.inserted_id)
 
-except errors.DuplicateKeyError:
-    print(f"Duplicate username '{new_user['username']}' detected. Insert skipped.")
-except Exception as e:
-    print("An error occurred during insert:", e)
+def list_users() -> list[MongoUser]:
+    users = list(users_col.find())
+    cleaned_users = MongoUserList.validate_python(users)
+    return cleaned_users
+
+
+def get_user_by_username(username: str) -> MongoUser | None:
+    user_data = users_col.find_one({"username": username})
+    if user_data:
+        return MongoUser.model_validate(user_data)
+    return None
+
+
+if __name__ == "__main__":
+    users = list_users()
+
+    # Export clean JSON with ISO timestamps
+    json_bytes = MongoUserList.dump_json(users, indent=2)
+
+    with open("data/mongo_users.json", "wb") as f:
+        f.write(json_bytes)
+
+    print("Exported users to data/mongo_users.json")
+
+    user = get_user_by_username("alice")
+    print("Mongo user with username 'alice':", user)
+
+        
+
