@@ -23,6 +23,6 @@ class ScientificArticle(Base):
    
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     
-    author_id: Mapped[int] = mapped_column(ForeignKey("authors.id", nullable=True))
+    author_id: Mapped[int] = mapped_column(ForeignKey("authors.id"), nullable=True)
     author = relationship("Author", back_populates="articles")
     
