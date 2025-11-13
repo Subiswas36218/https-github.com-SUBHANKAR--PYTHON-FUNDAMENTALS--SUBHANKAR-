@@ -1,8 +1,7 @@
-import json
-from typing import Any
 from datetime import datetime
+from typing import Any
+
 from pydantic import BaseModel, Field, TypeAdapter, field_validator
-from bson import ObjectId
 from pymongo import MongoClient
 
 MONGO_URL = "mongodb://root:samindia@localhost:27017/?authSource=admin"
@@ -31,8 +30,6 @@ class MongoUser(BaseModel):
     def validate_created_at(cls, v: Any) -> str | None:
         return v.isoformat() if isinstance(v, datetime) else v
 
-
-    
     @field_validator("created_at", mode="before")
     @classmethod
     def parse_created_at(cls, v: Any) -> datetime | None:
@@ -73,6 +70,3 @@ if __name__ == "__main__":
 
     user = get_user_by_username("alice")
     print("Mongo user with username 'alice':", user)
-
-        
-

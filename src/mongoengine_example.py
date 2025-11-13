@@ -1,17 +1,19 @@
+from datetime import datetime
+
+from bson import ObjectId
 from mongoengine import (
+    DateTimeField,
     Document,
-    StringField,
-    IntField,
     EmbeddedDocument,
     EmbeddedDocumentField,
-    DateTimeField,
-    connect,
-    ListField,
     EmbeddedDocumentListField,
+    IntField,
+    ListField,
+    StringField,
+    connect,
 )
 from mongoengine.errors import FieldDoesNotExist, ValidationError
-from datetime import datetime
-from bson import ObjectId
+
 from pymongo_example import MongoUser, MongoUserList  # for type comparison only
 
 MONGO_URL = "mongodb://root:samindia@localhost:27017/?authSource=admin"
@@ -66,7 +68,6 @@ if __name__ == "__main__":
                 f"[{user.id}] Username: {user.username}, Email: {user.email}, Created At: {user.created_at}"
             )
 
-        
         with open("data/mongoengine_users.json", "wb") as f:
             f.write(MongoUserList.dump_json(users, indent=2))
 
@@ -76,4 +77,3 @@ if __name__ == "__main__":
         print("Skipped malformed document:", e)
     except Exception as e:
         print("Unexpected error:", e)
-

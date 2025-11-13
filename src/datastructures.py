@@ -1,5 +1,5 @@
-from typing import NamedTuple
 from dataclasses import dataclass, field
+from typing import NamedTuple
 
 # Named Tuple
 
@@ -23,4 +23,6 @@ class DataClassUser:
     tags: list[str] = field(default_factory=list)
 
 
-data_class_user = DataClassUser(user_id=2, username="Jane Doe", email="jane@example.com")
+data_class_user = DataClassUser(
+    user_id=2, username="Jane Doe", email="jane@example.com"
+)

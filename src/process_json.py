@@ -1,9 +1,10 @@
-import pandas as pd
-import numpy as np
 import json
 
-def main() -> None:
+import numpy as np
+import pandas as pd
 
+
+def main() -> None:
     json_data = """
     [
         {"user_id": 1, "age": 25, "salary": 50000, "email": "alice@example.com", "signup_date": "2025-01-10"},

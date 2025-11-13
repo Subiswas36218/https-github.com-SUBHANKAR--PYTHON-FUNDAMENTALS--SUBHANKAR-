@@ -1,4 +1,3 @@
-from typing import Any
 import pandas as pd
 
 
@@ -39,7 +38,9 @@ def main() -> None:
     messy_data.info()
 
     # Try converting signup_date to datetime (to highlight issues)
-    messy_data["signup_date"] = pd.to_datetime(messy_data["signup_date"], errors="coerce")
+    messy_data["signup_date"] = pd.to_datetime(
+        messy_data["signup_date"], errors="coerce"
+    )
 
     print("\n=== After Cleaning signup_date ===")
     print(messy_data)
@@ -47,4 +48,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
