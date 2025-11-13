@@ -54,7 +54,6 @@ def load_data_from_csv(path: Path) -> None:
                         session.add(author)
 
                     author_cache[author_key] = author
-
                 article = ScientificArticle(
                     arxiv_id=arxiv_id,
                     title=title,
