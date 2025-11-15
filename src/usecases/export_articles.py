@@ -9,7 +9,7 @@ from src.models.mongo import ScientificArticle as MongoArticle, Author as MongoA
 from src.storage.relational_db import Session
 
 
-def export_from_db():
+def export_from_db() -> None:
     with Session() as session:
         query = select(ScientificArticle)
         result = session.execute(query)
