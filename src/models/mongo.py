@@ -2,14 +2,16 @@ from mongoengine import EmbeddedDocument, IntField, StringField, DateTimeField, 
 
 
 class Author(EmbeddedDocument): # type: ignore[misc]
-    id = IntField(required=True)
+    db_id = IntField(required=True)
     full_name = StringField()
     title = StringField()
     
 
 class ScientificArticle(Document): # type: ignore[misc]
-    meta = {"collection": "articles", "indexes": ["id", "arxiv_id"]}
-    id = IntField(required=True)
+    meta = {"collection": "articles",
+            "indexes": ["db_id", "arxiv_id"]
+            }
+    db_id = IntField(required=True)
     
     title = StringField()
     summary = StringField()
