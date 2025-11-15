@@ -1,4 +1,5 @@
 from datetime import datetime
+import pprint
 from typing import Any
 
 from pydantic import BaseModel, Field, TypeAdapter, field_validator
@@ -38,8 +39,9 @@ class MongoUser(BaseModel):
                 return datetime.fromisoformat(v)
             except ValueError:
                 return None
-        return v
-
+        if isinstance(v, datetime):
+            return v
+        return None
 
 MongoUserList = TypeAdapter(list[MongoUser])
 
@@ -58,15 +60,6 @@ def get_user_by_username(username: str) -> MongoUser | None:
 
 
 if __name__ == "__main__":
-    users = list_users()
+    result = client.PythonDE.command({'listIndexes': 'articles'})
+    pprint.pprint(result)
 
-    # Export clean JSON with ISO timestamps
-    json_bytes = MongoUserList.dump_json(users, indent=2)
-
-    with open("data/mongo_users.json", "wb") as f:
-        f.write(json_bytes)
-
-    print("Exported users to data/mongo_users.json")
-
-    user = get_user_by_username("alice")
-    print("Mongo user with username 'alice':", user)

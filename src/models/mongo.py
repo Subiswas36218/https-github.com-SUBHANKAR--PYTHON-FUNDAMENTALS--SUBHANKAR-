@@ -1,4 +1,5 @@
-from mongoengine import EmbeddedDocument, IntField, StringField, DateTimeField, EmbeddedDocumentField, Document
+from datetime import datetime
+from mongoengine import EmbeddedDocument, IntField, StringField, DateTimeField, EmbeddedDocumentField, Document # pyright: ignore[reportMissingImports]
 
 
 class Author(EmbeddedDocument): # type: ignore[misc]
@@ -9,7 +10,10 @@ class Author(EmbeddedDocument): # type: ignore[misc]
 
 class ScientificArticle(Document): # type: ignore[misc]
     meta = {"collection": "articles",
-            "indexes": ["db_id", "arxiv_id"]
+            "indexes": ["db_id", 
+                        "arxiv_id",
+                        "$text",
+                        ],
             }
     db_id = IntField(required=True)
     
