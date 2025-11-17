@@ -1,4 +1,5 @@
 _pycache_/
+*.pyc
 venv/
 .mypy_cache/
 .ruff_cache/
