@@ -1,18 +1,20 @@
-from sqlalchemy import create_engine, text, select
+from datetime import datetime
+
 from sqlalchemy import (
-    MetaData, Table, Column,
-    Integer, String, DateTime,
+    DateTime,
+    String,
+    create_engine,
+    select,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
-from datetime import datetime
 
 DATABASE_URL = "mariadb+mariadbconnector://root:samindia@127.0.0.1:3307/Python_DE"
 
 engine = create_engine(
     DATABASE_URL,
-    echo=True, # Log SQL queries
-    pool_size=10, # Connection pool size
-    max_overflow=20 # Additional connections
+    echo=True,  # Log SQL queries
+    pool_size=10,  # Connection pool size
+    max_overflow=20,  # Additional connections
 )
 
 # metadata = MetaData()
@@ -42,29 +44,30 @@ class Base(DeclarativeBase):
 
 class User(Base):
     __tablename__ = "users"
-    
-#    id = Column(Integer, primary_key=True)
-#    username = Column(String(50), nullable=False, unique=True)
-#    email = Column(String(120), nullable=False)
-#    created_at = Column(DateTime, default=datetime.utcnow)
-    
+
+    #    id = Column(Integer, primary_key=True)
+    #    username = Column(String(50), nullable=False, unique=True)
+    #    email = Column(String(120), nullable=False)
+    #    created_at = Column(DateTime, default=datetime.utcnow)
+
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
     email: Mapped[str] = mapped_column(String(120), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
 
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 
 with Session() as session:
-        query = select(User).where(User.username == "bob")
-        result = session.execute(query)
-        user = result.scalars().first()
+    query = select(User).where(User.username == "bob")
+    result = session.execute(query)
+    user = result.scalars().first()
 
-        if user is None:
-            print("No user found with username 'bob'")
-        else:
-            print(user.username, user.email)
-            user.email = "bob123@yahoo.com"
-            session.commit()
+    if user is None:
+        print("No user found with username 'bob'")
+    else:
+        print(user.username, user.email)
+        user.email = "bob123@yahoo.com"
+        session.commit()

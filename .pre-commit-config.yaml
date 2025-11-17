@@ -12,16 +12,21 @@ repos:
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
-      - id: ruff-format  
+      - id: ruff-format
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.1
     hooks:
       - id: mypy
-        args: ["--strict", "src/document_processor.py"]
+        pass_filenames: false
+        args:
+          - --config-file=mypy.ini
+          - --explicit-package-bases
+          - --namespace-packages
+          - .
         additional_dependencies:
-        - pydantic==2.11.9
-        - pandas==2.3.2.250827
-        - sqlalchemy[mypy]==2.0.44
-        - pymongo==4.15.3
-        - mongoengine==0.29.1
+          - pydantic==2.11.9
+          - pandas==2.3.2
+          - sqlalchemy[mypy]==2.0.44
+          - pymongo==4.15.3
+          - mongoengine==0.29.1

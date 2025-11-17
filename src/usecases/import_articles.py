@@ -1,8 +1,9 @@
 import csv
 from pathlib import Path
-from sqlalchemy.exc import IntegrityError   # pyright: ignore[reportMissingImports]
 
-from src.models.relational import ScientificArticle, Author
+from sqlalchemy.exc import IntegrityError  # pyright: ignore[reportMissingImports]
+
+from src.models.relational import Author, ScientificArticle
 from src.storage.relational_db import Session
 
 
@@ -12,11 +13,10 @@ def clean(s: str) -> str:
 
 
 def load_data_from_csv(path: Path) -> None:
-    with open(path, "r") as f:
+    with open(path) as f:
         reader = csv.DictReader(f, delimiter=";")
 
         for line in reader:
-
             # Clean the fields from the CSV
             arxiv_id = clean(line["arxiv_id"])
             title = clean(line["title"])
@@ -29,12 +29,11 @@ def load_data_from_csv(path: Path) -> None:
             pdf_path = Path(file_path)
             if not pdf_path.exists():
                 print(f"WARNING: PDF does not exist → {file_path}")
-                
+
                 continue
 
             with Session() as session:
                 try:
-                    
                     author = Author(
                         full_name=author_full_name,
                         title=author_title,
@@ -42,7 +41,6 @@ def load_data_from_csv(path: Path) -> None:
                     session.add(author)
                     session.flush()
 
-                    
                     article = ScientificArticle(
                         title=title,
                         summary=summary,
@@ -61,6 +59,3 @@ def load_data_from_csv(path: Path) -> None:
 
 if __name__ == "__main__":
     load_data_from_csv(Path("data/articles.csv"))
-
-
-            

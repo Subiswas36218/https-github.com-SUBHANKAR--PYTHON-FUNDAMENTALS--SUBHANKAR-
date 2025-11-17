@@ -1,19 +1,23 @@
 from dataclasses import dataclass, field
 from typing import NamedTuple
 
-# Named Tuple
 
-
+# ---------------------------
+# NamedTuple: Immutable User
+# ---------------------------
 class User(NamedTuple):
     id: int
     name: str
     email: str
 
 
-user = User(user_id=1, name="John Doe", email="email@site.com")
+# Correct call: "id", not "user_id"
+user = User(id=1, name="John Doe", email="email@site.com")
 
 
-# Dataclass
+# ---------------------------
+# Dataclass: Mutable User
+# ---------------------------
 @dataclass
 class DataClassUser:
     user_id: int

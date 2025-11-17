@@ -1,6 +1,5 @@
-from typing import List
-from src.models.mongo import ScientificArticle
 import src.storage.mongo  # noqa: F401
+from src.models.mongo import ScientificArticle
 
 
 def list_articles() -> list[ScientificArticle]:
@@ -11,5 +10,3 @@ if __name__ == "__main__":
     for a in list_articles():
         preview = (a.text or "").strip()  # ensures no crash
         print(f"{a.arxiv_id}: {preview[:100]}")
-
-    

@@ -1,5 +1,5 @@
-from datetime import datetime
 import pprint
+from datetime import datetime
 from typing import Any
 
 from pydantic import BaseModel, Field, TypeAdapter, field_validator
@@ -43,6 +43,7 @@ class MongoUser(BaseModel):
             return v
         return None
 
+
 MongoUserList = TypeAdapter(list[MongoUser])
 
 
@@ -60,6 +61,5 @@ def get_user_by_username(username: str) -> MongoUser | None:
 
 
 if __name__ == "__main__":
-    result = client.PythonDE.command({'listIndexes': 'articles'})
+    result = client.PythonDE.command({"listIndexes": "articles"})
     pprint.pprint(result)
-

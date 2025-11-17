@@ -1,42 +1,54 @@
-import src.storage.mongo  # noqa
-import pymupdf4llm # pyright: ignore[reportMissingImports]
+from typing import cast
 
-from sqlalchemy import select # pyright: ignore[reportMissingImports]
-from mongoengine.errors import DoesNotExist # pyright: ignore[reportMissingImports]
+import pymupdf4llm  # pyright: ignore[reportMissingImports]
+from mongoengine.errors import DoesNotExist  # pyright: ignore[reportMissingImports]
+from sqlalchemy import select  # pyright: ignore[reportMissingImports]
 
+import src.storage.mongo  # noqa: F401
+from src.models.mongo import Author as MongoAuthor
+from src.models.mongo import ScientificArticle as MongoArticle
 from src.models.relational import ScientificArticle
-from src.models.mongo import ScientificArticle as MongoArticle, Author as MongoAuthor
 from src.storage.relational_db import Session
 
 
+def extract_markdown(file_path: str, arxiv_id: str) -> str | None:
+    """
+    Convert PDF to markdown. Returns:
+    - str: Extracted markdown
+    - None: On failure
+    """
+    try:
+        # pymupdf4llm returns Any → cast to str for mypy
+        return cast(str, pymupdf4llm.to_markdown(file_path))
+    except Exception as exc:  # noqa: BLE001
+        print(f"FILE ERROR for {arxiv_id}: {exc}")
+        return None
+
+
 def export_from_db() -> None:
+    """Export all SQL ScientificArticle rows into MongoDB."""
     with Session() as session:
         result = session.execute(select(ScientificArticle))
 
         for article in result.scalars().all():
-
-            
+            # Build Mongo Author object
             m_author = MongoAuthor(
                 db_id=article.author.id,
                 full_name=article.author.full_name,
                 title=article.author.title,
             )
 
-            
-            def extract_markdown(path: str) -> str | None:
-                try:
-                    return pymupdf4llm.to_markdown(path)
-                except Exception as e:
-                    print(f"FILE ERROR for {article.arxiv_id}: {e}")
-                    return None
             try:
-                # Try to find existing Mongo record
+                # Try to find an existing Mongo document
                 m_article = MongoArticle.objects.get(arxiv_id=article.arxiv_id)
 
-                # Reuse existing text OR extract it now if missing
-                md_text = m_article.text or extract_markdown(article.file_path)
+                md_text = (
+                    m_article.text
+                    if m_article.text
+                    else extract_markdown(article.file_path, article.arxiv_id)
+                )
 
-                # Update the existing record
+                # Update the existing Mongo document
                 m_article.update(
                     set__db_id=article.id,
                     set__title=article.title,
@@ -49,14 +61,13 @@ def export_from_db() -> None:
                 )
 
                 print(f"Updated → {article.arxiv_id}")
-                continue  # ⬅️ VERY IMPORTANT — prevents INSERT block from running
+                continue
 
             except DoesNotExist:
-                # No existing record → extract markdown (once)
-                md_text = extract_markdown(article.file_path)
+                # Document does not exist → create new one
+                md_text = extract_markdown(article.file_path, article.arxiv_id)
 
-                # Create new Mongo article
-                m_article = MongoArticle(
+                new_doc = MongoArticle(
                     db_id=article.id,
                     title=article.title,
                     summary=article.summary,
@@ -67,17 +78,9 @@ def export_from_db() -> None:
                     text=md_text,
                 )
 
-                m_article.save()
+                new_doc.save()
                 print(f"Inserted → {article.arxiv_id}")
 
 
 if __name__ == "__main__":
     export_from_db()
-
-
-
-
-
-
-                   
-            

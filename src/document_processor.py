@@ -1,7 +1,5 @@
 import json
 from pathlib import Path
-
-file_path = Path("data/documents.json")
 from typing import Any
 
 from pydantic import BaseModel, ValidationError  # pyright: ignore[reportMissingImports]
@@ -28,7 +26,7 @@ def load_documents(file_path: Path) -> list[Document]:
         file_path (Path): Path to JSON file.
 
     Returns:
-        List[Document]: List of validated Document objects.
+        list[Document]: List of validated Document objects.
     """
     if not file_path.exists():
         raise FileNotFoundError(f"File not found: {file_path}")
@@ -52,18 +50,26 @@ def display_documents(documents: list[Document]) -> None:
     Display information about documents, handling missing fields gracefully.
 
     Args:
-        documents (List[Document]): List of Document objects.
+        documents (list[Document]): List of Document objects.
     """
     for doc in documents:
         print(f"ID: {doc.id}")
         print(f"Title: {doc.title}")
-        print(f"Tags: {', '.join(doc.tags) if doc.tags else 'No tags'}")
+
+        if doc.tags:
+            tags_str = ", ".join(doc.tags)
+        else:
+            tags_str = "No tags"
+
+        print(f"Tags: {tags_str}")
         print(f"Published: {doc.published}")
+
         if doc.metadata:
             print(f"Author: {doc.metadata.author}")
             print(f"Pages: {doc.metadata.pages}")
         else:
             print("Metadata: Not provided")
+
         print("-" * 40)
 
 

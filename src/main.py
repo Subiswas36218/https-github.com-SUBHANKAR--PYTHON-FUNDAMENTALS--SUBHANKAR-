@@ -1,11 +1,10 @@
-from src.utils.add import add
+from pathlib import Path
 
+from src.pymongo_example import list_users
 from src.usecases.export_articles import export_from_db
 from src.usecases.import_articles import load_data_from_csv
 from src.usecases.search_text import search_articles
-from src.pymongo_example import list_users, get_user_by_username
-
-from pathlib import Path
+from src.utils.add import add
 
 
 def main() -> None:
