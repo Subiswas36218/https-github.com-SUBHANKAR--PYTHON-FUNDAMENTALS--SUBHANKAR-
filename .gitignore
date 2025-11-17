@@ -1,6 +1,8 @@
 _pycache_/
 *.pyc
 .DS_Store
+.ruff_cache/
+.ruff_cache/
 venv/
 .mypy_cache/
 .ruff_cache/
