@@ -13,3 +13,11 @@
 # -> load from db -> load files from disk -> put into mongodb
 
 # - images
+
+# 0. "data/papers/articles.csv" (csv file)
+# 1. lines from CSV
+# 2. article objects from SQLAlchemy
+# 3. mongo documents
+
+# pandas:
+# data.pipe(to_lines).pipe(to_sql).pipe(to_mongo)

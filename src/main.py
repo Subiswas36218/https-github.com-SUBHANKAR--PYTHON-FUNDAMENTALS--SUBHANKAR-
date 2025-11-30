@@ -1,16 +1,16 @@
 from pathlib import Path
 
 from src.pymongo_example import list_users
-from src.usecases.export_articles import export_from_db
-from src.usecases.import_articles import load_data_from_csv
+from src.usecases.export_articles import create_in_mongo
+from src.usecases.import_articles import create_in_relational_db, load_data_from_csv
 from src.usecases.search_text import search_articles
 from src.utils.add import add
 
 
 def main() -> None:
     print("\n=== PythonDE Project Launcher ===")
-    print("1. Export SQL → MongoDB")
-    print("2. Load CSV into SQL")
+    print("1. Export CSV → SQL → MongoDB")
+    print("2. Load CSV into SQL only")
     print("3. Search text inside MongoDB articles")
     print("4. List Mongo users (pymongo_example)")
     print("5. Test utils.add()")
@@ -19,30 +19,53 @@ def main() -> None:
     choice = input("\nSelect an option: ")
 
     if choice == "1":
-        print("\nRunning SQL → Mongo Export...\n")
-        export_from_db()
+        print("\nRunning CSV → SQL → Mongo Export...\n")
+        df = (
+            load_data_from_csv(Path("data/papers/articles.csv"))
+            .pipe(create_in_relational_db)
+            .pipe(create_in_mongo)
+        )
+        print("\nExport finished.")
+        print(df)
 
+    # --------------------------------------------------------
+    # 2. Load CSV into SQL ONLY (no Mongo export)
+    # --------------------------------------------------------
     elif choice == "2":
-        print("\nLoading CSV into MariaDB...")
-        load_data_from_csv(Path("data/articles.csv"))
+        print("\nLoading CSV into MariaDB (SQL only)...")
+        df = load_data_from_csv(Path("data/papers/articles.csv"))
+        df = create_in_relational_db(df)
+        print("\nSQL insert completed.")
+        print(df)
 
+    # --------------------------------------------------------
+    # 3. MongoDB text search
+    # --------------------------------------------------------
     elif choice == "3":
         query = input("Enter search text: ")
         print("\nSearching MongoDB articles...\n")
         results = search_articles(query)
         for r in results:
             print(f"Match → {r.arxiv_id}: {r.title}")
+        print(f"\nTotal matches: {len(results)}")
 
+    # --------------------------------------------------------
+    # 4. List Mongo users (demo)
+    # --------------------------------------------------------
     elif choice == "4":
         print("\nListing Mongo Users:")
         users = list_users()
         for u in users:
             print(f"- {u.username} ({u.email})")
 
+    # --------------------------------------------------------
+    # 5. utils.add() test
+    # --------------------------------------------------------
     elif choice == "5":
         print("\nTesting utils.add():")
         print("add(5, 10) →", add(5, 10))
 
+    # --------------------------------------------------------
     elif choice == "0":
         print("Exiting.")
         return
