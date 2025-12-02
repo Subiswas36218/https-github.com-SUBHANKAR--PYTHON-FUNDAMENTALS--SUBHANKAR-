@@ -1,51 +1,53 @@
+import logging
+from pathlib import Path
 from typing import Any, cast
+from urllib.parse import urlparse
 
 import pandas as pd
 import pymupdf4llm  # pyright: ignore[reportMissingImports]
-from mongoengine.errors import DoesNotExist  # pyright: ignore[reportMissingImports]
+import requests  # pyright: ignore[reportMissingImports]
 
-import src.storage.mongo  # noqa: F401
-from src.models.mongo import Author as MongoAuthor
-from src.models.mongo import ScientificArticle as MongoArticle
+import src.storage.mongo  # noqa: F401 (ensure DB connection)
+from src.models.mongo import Author as MongoAuthor  # mongoengine EmbeddedDocument
+from src.models.mongo import ScientificArticle as MongoArticle  # mongoengine Document
+
+LOG = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
+PAPERS_DIR = Path("data/papers")
+PAPERS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def extract_markdown(file_path: str, arxiv_id: str) -> str | None:
+    """Return markdown text for a local PDF path, or None on failure."""
     try:
-        return cast(str, pymupdf4llm.to_markdown(file_path))
+        p = Path(file_path)
+        if not p.exists():
+            LOG.warning(
+                "extract_markdown: file not found for %s -> %s", arxiv_id, file_path
+            )
+            return None
+        md = pymupdf4llm.to_markdown(str(p))
+        return cast(str | None, md)
     except Exception as exc:
-        print(f"FILE ERROR for {arxiv_id}: {exc}")
+        LOG.exception("FILE ERROR for %s: %s", arxiv_id or "<no-id>", exc)
         return None
 
 
 def _get_field(row: Any, field: str) -> Any:
-    """
-    Robust accessor - works for pandas.Series, numpy.record, dict or object.
-    Returns None if not found.
-    """
-    # dict-like first
-    try:
-        if isinstance(row, dict):
+    """Universal accessor for Series, dict, record, or object."""
+    if isinstance(row, dict):
+        return row.get(field, None)
+    if hasattr(row, "get"):
+        try:
             return row.get(field, None)
-    except Exception:
-        pass
-
-    # pandas Series or mapping-like
-    try:
-        if hasattr(row, "get"):
-            val = row.get(field, None)
-            if val is not None:
-                return val
-    except Exception:
-        pass
-
-    # attribute access (numpy.record exposes attributes)
-    try:
-        if hasattr(row, field):
+        except Exception:
+            pass
+    if hasattr(row, field):
+        try:
             return getattr(row, field)
-    except Exception:
-        pass
-
-    # indexing by name (numpy.recarray)
+        except Exception:
+            pass
     try:
         return row[field]
     except Exception:
@@ -54,12 +56,12 @@ def _get_field(row: Any, field: str) -> Any:
 
 def _is_present(value: Any) -> bool:
     """
-    Return True if value is present (not None, not pd.NA, not empty string).
-    Use this instead of 'if value:' which is ambiguous with pd.NA.
+    Return True if value is valid and non-empty.
+    Handles pd.NA, NaN, and empty strings.
     """
+
     if value is None:
         return False
-    # pandas special NA
     try:
         if pd.isna(value):
             return False
@@ -70,16 +72,74 @@ def _is_present(value: Any) -> bool:
     return True
 
 
+def download_file(row: pd.Series) -> str:
+    """
+    Given a row (Series or dict), return a local file path (string).
+    If download fails or no file found, returns an empty string.
+    """
+    raw = _get_field(row, "file_path") or ""
+    raw = str(raw).strip()
+    if not raw:
+        return ""
+
+    if raw.startswith("data/file/"):
+        raw = raw[len("data/file/") :]
+
+    parsed = urlparse(raw)
+
+    if parsed.scheme in ("http", "https"):
+        filename = Path(parsed.path).name
+        if not filename:
+            LOG.warning("download_file: no filename in URL %s", raw)
+            return ""
+
+        local_path = PAPERS_DIR / filename
+
+        if local_path.exists():
+            return str(local_path)
+
+        try:
+            with requests.get(raw, stream=True, timeout=30) as resp:
+                resp.raise_for_status()
+                with open(local_path, "wb") as f:
+                    for chunk in resp.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+            LOG.info("Downloaded: %s -> %s", raw, local_path)
+            return str(local_path)
+        except Exception as exc:
+            LOG.exception("Download failed for %s: %s", raw, exc)
+            try:
+                if local_path.exists():
+                    local_path.unlink(missing_ok=True)
+            except Exception:
+                pass
+            return ""
+
+    local_candidate = Path(raw)
+    if not local_candidate.is_absolute():
+        candidate = PAPERS_DIR / local_candidate.name
+    else:
+        candidate = local_candidate
+
+    if candidate.exists():
+        return str(candidate.resolve())
+
+    LOG.debug("Local file not found for %s; returning raw path", raw)
+    return raw
+
+
 def save_article(row: pd.Series) -> Any:
     """
-    Upsert one article into MongoDB. Returns the MongoArticle instance or a
-    string id, or an empty string on failure — kept intentionally
-    consistent with previous pipeline.
+    Insert or update a MongoArticle from the given row.
+    Returns:
+      - MongoArticle document (on success), or
+      - string id for documents without an arxiv_id, or
+      - empty string on failure.
     """
     try:
-        # read fields in a robust way
-        arxiv_id_raw = _get_field(row, "arxiv_id")
-        arxiv_id = str(arxiv_id_raw).strip() if _is_present(arxiv_id_raw) else None
+        arxiv_raw = _get_field(row, "arxiv_id")
+        arxiv_id = str(arxiv_raw).strip() if _is_present(arxiv_raw) else None
 
         title_raw = _get_field(row, "title")
         title = str(title_raw).strip() if _is_present(title_raw) else ""
@@ -88,20 +148,15 @@ def save_article(row: pd.Series) -> Any:
         summary = str(summary_raw).strip() if _is_present(summary_raw) else ""
 
         file_path_raw = _get_field(row, "file_path")
-        file_path = str(file_path_raw).strip() if _is_present(file_path_raw) else None
+        file_path = str(file_path_raw).strip() if _is_present(file_path_raw) else ""
 
-        # author fields: support both db_id and author_db_id names
-        author_db_id_raw = _get_field(row, "db_id") or _get_field(row, "author_db_id")
-        try:
-            author_db_id = (
-                int(author_db_id_raw) if _is_present(author_db_id_raw) else None
-            )
-        except Exception:
-            author_db_id = None
+        # Prefer 'local_file_path' but guard against pd.NA
+        local_raw = _get_field(row, "local_file_path")
+        if not _is_present(local_raw):
+            local_raw = _get_field(row, "local_file")
+        local_file_path = str(local_raw).strip() if _is_present(local_raw) else ""
 
-        author_full_name_raw = _get_field(row, "author_full_name") or _get_field(
-            row, "author"
-        )
+        author_full_name_raw = _get_field(row, "author_full_name")
         author_full_name = (
             str(author_full_name_raw).strip()
             if _is_present(author_full_name_raw)
@@ -113,83 +168,86 @@ def save_article(row: pd.Series) -> Any:
             str(author_title_raw).strip() if _is_present(author_title_raw) else ""
         )
 
-        # Build Mongo embedded author
+        author_db_id_raw = _get_field(row, "db_id")
+        if not _is_present(author_db_id_raw):
+            author_db_id_raw = _get_field(row, "author_db_id")
+
+        try:
+            author_db_id = int(author_db_id_raw) if _is_present(author_db_id_raw) else 0
+        except Exception:
+            author_db_id = 0
+
         m_author = MongoAuthor(
-            db_id=author_db_id or 0,
-            full_name=author_full_name,
-            title=author_title,
+            db_id=author_db_id or 0, full_name=author_full_name, title=author_title
         )
 
-        md_text = None
-        if _is_present(file_path):
-            # mypy can't infer that file_path is a str here; make it explicit
-            md_text = extract_markdown(cast(str, file_path), arxiv_id or "")
+        md_text: str | None = None
+        if _is_present(local_file_path):
+            md_text = extract_markdown(local_file_path, arxiv_id or "")
+        elif _is_present(file_path) and not urlparse(file_path).scheme:
+            md_text = extract_markdown(file_path, arxiv_id or "")
 
-        # Prepare kwargs: put None or empty string values as appropriate to
-        # match your Mongo schema.
-        kwargs = dict(
+        doc_kwargs: dict[str, Any] = dict(
             db_id=author_db_id or 0,
             title=title,
             summary=summary,
-            file_path=file_path or "",
-            arxiv_id=arxiv_id or "",
+            file_path=(local_file_path or file_path or ""),
+            arxiv_id=(arxiv_id or ""),
             author=m_author,
             text=md_text,
         )
 
-        # Upsert: try to find existing by arxiv_id when available
         if _is_present(arxiv_id):
-            try:
-                m_article = MongoArticle.objects.get(arxiv_id=arxiv_id)
-                # update -- use .modify or .update; using update with kwargs as before
-                m_article.update(**kwargs)
-                # re-fetch updated document so we can return a Document instance
-                m_article = MongoArticle.objects.get(arxiv_id=arxiv_id)
-                print(f"Updated → {arxiv_id}")
-                return m_article
-            except DoesNotExist:
-                m_article = MongoArticle(**kwargs)
-                m_article.save()
-                print(f"Inserted → {arxiv_id}")
-                return m_article
-        else:
-            # no arxiv_id: create a document but warn
-            m_article = MongoArticle(**kwargs)
-            m_article.save()
-            print(f"Inserted (no arxiv_id) → {m_article.id}")
-            return pd.Series([m_article.id], index=["mongo_id"])
+            existing = MongoArticle.objects(arxiv_id=arxiv_id).first()
+            if existing:
+                for k, v in doc_kwargs.items():
+                    if k == "author":
+                        existing.author = v
+                    else:
+                        setattr(existing, k, v)
+                existing.save()
+                LOG.info("Updated → %s", arxiv_id)
+                return existing
 
-    except Exception as e:
-        # keep consistent "Failure: ..." log so your pipeline grep still works
-        print(f"Failure: {e}")
-        return pd.Series([""], index=["mongo_id"])
+            new_doc = MongoArticle(**doc_kwargs)
+            new_doc.save()
+            LOG.info("Inserted → %s", arxiv_id)
+            return new_doc
+
+        new_doc = MongoArticle(**doc_kwargs)
+        new_doc.save()
+        LOG.info("Inserted (no arxiv_id) → %s", new_doc.id)
+        return str(new_doc.id)
+
+    except Exception as exc:
+        LOG.exception("Failure saving article: %s", exc)
+        return ""
+
+
+def download_files(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Download remote files and return a new DataFrame with a 'local_file_path' column.
+    """
+    local_paths = df.apply(download_file, axis=1)
+    out = df.copy()
+    out["local_file_path"] = pd.Series(local_paths, index=out.index, dtype="string")
+    return out
 
 
 def create_in_mongo(df: pd.DataFrame) -> pd.DataFrame:
-    # apply save_article to each row and collect results
-    ids_series = df.apply(save_article, axis=1)
+    """
+    Save rows into MongoDB and add a 'mongo_id' column containing the Mongo ID (string).
+    """
+    results = df.apply(save_article, axis=1)
 
-    # convert the returned values to string IDs (if possible) or None
-    mongo_ids: list[str | None] = []
-    for val in ids_series.tolist():
-        if val is None:
-            mongo_ids.append(None)
-            continue
-        # Document instance (mongoengine) exposes .id.
-        # Keep original instance if you prefer.
-
-        if hasattr(val, "id"):
-            try:
-                mongo_ids.append(str(val.id))
-                continue
-            except Exception:
-                pass
-        # maybe already a string id
-        if isinstance(val, str) and val != "":
-            mongo_ids.append(val)
-            continue
-        # empty string or unknown → treat as None
-        mongo_ids.append(None)
+    mongo_ids = []
+    for r in results.tolist():
+        if hasattr(r, "id"):
+            mongo_ids.append(str(r.id))
+        elif isinstance(r, str) and r:
+            mongo_ids.append(r)
+        else:
+            mongo_ids.append("")
 
     out = df.copy()
     out["mongo_id"] = pd.Series(mongo_ids, index=out.index, dtype="string")
