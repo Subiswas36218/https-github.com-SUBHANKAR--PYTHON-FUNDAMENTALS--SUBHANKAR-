@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import pandas as pd
 from lxml import etree
@@ -373,8 +373,7 @@ def create_in_relational_db(df: pd.DataFrame) -> pd.DataFrame:
     db_ids: list[int | None] = []
     author_ids: list[int | None] = []
 
-    rows = df.to_dict(orient="records")
-
+    rows = cast(list[dict[str, Any]], df.to_dict(orient="records"))
     for i, line in enumerate(rows):
         LOG.debug("Processing row %d arxiv_id=%s", i, line.get("arxiv_id"))
         result = save_article(line)

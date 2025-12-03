@@ -1,11 +1,16 @@
 from pathlib import Path
 
+from tqdm.auto import tqdm
+
+from src.usecases.arxiv import load_from_xml
 from src.usecases.export_articles import create_in_mongo, download_files
 from src.usecases.import_articles import (
     create_in_relational_db,
     load_data_from_xml,
 )
 from src.usecases.search_text import search_text_index
+
+tqdm.pandas(desc="Loading articles")
 
 if __name__ == "__main__":
     # load XML
@@ -29,16 +34,18 @@ if __name__ == "__main__":
 
     print("DataFrame after relational DB insertion:")
     print(df_after_mongo.to_string(index=False))
-    df = (
-        load_data_from_xml(Path("data/arxiv_articles.xml"))
-        .pipe(create_in_relational_db)
-        .pipe(download_files)
-        .pipe(create_in_mongo)
-    )
+    with open("data/arxiv_articles.xml", encoding="utf-8") as f:
+        df = (
+            # fetch_arxiv_articles("proton")
+            load_from_xml(f.read())
+            .pipe(create_in_relational_db)
+            .pipe(download_files)
+            .pipe(create_in_mongo)
+        )
     print("DataFrame after relational DB insertion:")
     print(df)
     #
-    results = search_text_index("galaxies")
+    results = search_text_index("angular")
     print("len results:", len(results))
     for article in results:
         print(f"{article.arxiv_id}: {article.title}")

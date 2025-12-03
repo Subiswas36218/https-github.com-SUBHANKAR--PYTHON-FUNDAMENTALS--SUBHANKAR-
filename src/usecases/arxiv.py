@@ -1,13 +1,14 @@
 from __future__ import annotations
 
+import io
+
+import pandas as pd
 import requests
 
 URL = "http://export.arxiv.org/api/query"
 
 
-def fetch_arxiv_articles(
-    query: str = "electron", start: int = 0, max_results: int = 10
-) -> str:
+def fetch_arxiv_articles(query: str, i: int = 0) -> pd.DataFrame:
     """
     Fetch a small set of arXiv Atom entries and save them to
     data/arxiv_articles.xml. Returns the raw XML text.
@@ -21,10 +22,10 @@ def fetch_arxiv_articles(
         The Atom XML payload as a string.
     """
     # Use string values for params so mypy and requests are happy
-    params: dict[str, str] = {
+    params: dict[str, str | int] = {
         "search_query": f"all:{query}",
-        "start": str(int(start)),
-        "max_results": str(int(max_results)),
+        "start": i,
+        "max_results": 10,
     }
 
     resp = requests.get(URL, params=params, timeout=10)
@@ -37,10 +38,31 @@ def fetch_arxiv_articles(
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(xml_data)
 
-    return xml_data
+    return load_from_xml(xml_data)
+
+
+def load_from_xml(xml_data: str) -> pd.DataFrame:
+    file_like = io.StringIO(xml_data)
+    df = pd.read_xml(
+        file_like,
+        xpath="/atom:feed/atom:entry",
+        namespaces={"atom": "http://www.w3.org/2005/Atom"},
+    )[["id", "title", "summary"]]
+
+    df["author_title"] = "PhD"
+
+    file_like = io.StringIO(xml_data)
+
+    _links_df = pd.read_xml(
+        file_like,
+        xpath="/atom:feed/atom:entry/atom:link",
+        namespaces={"atom": "http://www.w3.org/2005/Atom"},
+    )
+
+    return df
 
 
 if __name__ == "__main__":
-    articles_xml = fetch_arxiv_articles()
+    articles_xml = fetch_arxiv_articles(query="electron")
     # Print just the head to avoid massive terminal dumps
     print(articles_xml[:1000])

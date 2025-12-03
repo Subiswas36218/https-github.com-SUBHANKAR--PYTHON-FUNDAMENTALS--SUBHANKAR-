@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 import pandas as pd
 import pymupdf4llm  # pyright: ignore[reportMissingImports]
 import requests  # pyright: ignore[reportMissingImports]
+from tqdm.auto import tqdm
 
 import src.storage.mongo  # noqa: F401 (ensure DB connection)
 from src.models.mongo import Author as MongoAuthor  # mongoengine EmbeddedDocument
@@ -228,7 +229,11 @@ def download_files(df: pd.DataFrame) -> pd.DataFrame:
     """
     Download remote files and return a new DataFrame with a 'local_file_path' column.
     """
-    local_paths = df.apply(download_file, axis=1)
+    local_paths = pd.Series(
+        [download_file(row) for _, row in tqdm(df.iterrows(), total=len(df))]
+    )
+
+    df = pd.concat([df, local_paths.rename("local_file_path")], axis=1)
     out = df.copy()
     out["local_file_path"] = pd.Series(local_paths, index=out.index, dtype="string")
     return out
@@ -238,7 +243,11 @@ def create_in_mongo(df: pd.DataFrame) -> pd.DataFrame:
     """
     Save rows into MongoDB and add a 'mongo_id' column containing the Mongo ID (string).
     """
-    results = df.apply(save_article, axis=1)
+    results = pd.Series(
+        [save_article(row) for _, row in tqdm(df.iterrows(), total=len(df))]
+    )
+
+    df = pd.concat([df, results.rename("mongo_id")], axis=1)
 
     mongo_ids = []
     for r in results.tolist():

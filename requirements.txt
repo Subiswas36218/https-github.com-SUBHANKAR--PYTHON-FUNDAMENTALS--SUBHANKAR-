@@ -12,3 +12,4 @@ pymupdf4llm==0.2.0
 requests==2.32.5
 lxml==6.0.2
 types-requests==2.32.4.20250913
+tqdm==4.67.1
