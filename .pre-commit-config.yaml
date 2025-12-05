@@ -32,3 +32,4 @@ repos:
           - mongoengine==0.29.1
           - pymupdf4llm==0.2.0
           - types-requests==2.32.4.20250913
+          - google-generativeai==0.8.5

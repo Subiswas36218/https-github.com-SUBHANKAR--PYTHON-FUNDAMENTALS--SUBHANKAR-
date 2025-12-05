@@ -6,6 +6,7 @@ _pycache_/
 venv/
 .mypy_cache/
 .ruff_cache/
+.env
 
 data/mariadb
 data/mongodb
@@ -23,3 +24,6 @@ mongo_data/
 *.wt
 *.turtle
 *.ibdata1
+.envrc
+.direnv
+venv
