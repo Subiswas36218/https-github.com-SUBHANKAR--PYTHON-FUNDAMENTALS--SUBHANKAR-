@@ -21,3 +21,7 @@
 
 # pandas:
 # data.pipe(to_lines).pipe(to_sql).pipe(to_mongo)
+#
+# "proton collision" -> [0.23, -0.45, 0.78, ...]
+# "proton collision happens in LHC" -> [0.23, -0.45, 0.78, ...]
+# "proton collision is an operation between two protons" -> [0.21, -0.40, 0.80, ...]

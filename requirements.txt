@@ -14,3 +14,4 @@ lxml==6.0.2
 types-requests==2.32.4.20250913
 tqdm==4.67.1
 google-generativeai==0.8.5
+qdrant-client==1.16.1
