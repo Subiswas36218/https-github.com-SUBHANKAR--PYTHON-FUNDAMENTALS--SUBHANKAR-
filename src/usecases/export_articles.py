@@ -130,6 +130,37 @@ def download_file(row: pd.Series) -> str:
     return raw
 
 
+def convert_article_to_markdown(row: pd.Series) -> pd.Series:
+    """
+    Take one DataFrame row and return a Series with a single column 'md_text'
+    containing the markdown extracted from the PDF, or an empty string if
+    extraction fails.
+    """
+    # Prefer local_file_path if present
+    path_raw = _get_field(row, "local_file_path")
+    if not _is_present(path_raw):
+        path_raw = _get_field(row, "file_path")
+
+    path = str(path_raw).strip() if _is_present(path_raw) else ""
+
+    arxiv_raw = _get_field(row, "arxiv_id")
+    arxiv_id = str(arxiv_raw).strip() if _is_present(arxiv_raw) else ""
+
+    md_text: str | None = None
+
+    # Only treat as local file if there is no URL scheme (i.e. not http/https)
+    if path and not urlparse(path).scheme:
+        md_text = extract_markdown(path, arxiv_id or "")
+    else:
+        LOG.warning(
+            "convert_article_to_markdown: no usable local path for %s (path=%r)",
+            arxiv_id or "<no-arxiv-id>",
+            path,
+        )
+
+    return pd.Series({"md_text": md_text or ""}, dtype="string")
+
+
 def save_article(row: pd.Series) -> Any:
     """
     Insert or update a MongoArticle from the given row.
@@ -195,7 +226,7 @@ def save_article(row: pd.Series) -> Any:
             file_path=(local_file_path or file_path or ""),
             arxiv_id=(arxiv_id or ""),
             author=m_author,
-            text=md_text,
+            text=md_text or "",
         )
 
         if _is_present(arxiv_id):
@@ -261,3 +292,9 @@ def create_in_mongo(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
     out["mongo_id"] = pd.Series(mongo_ids, index=out.index, dtype="string")
     return out
+
+
+def convert_to_markdown(df: pd.DataFrame) -> pd.DataFrame:
+    texts = df.progress_apply(convert_article_to_markdown, axis=1)
+    df = pd.concat([df, texts], axis=1)
+    return df

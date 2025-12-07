@@ -2,8 +2,12 @@ from pathlib import Path
 
 from tqdm.auto import tqdm
 
-from src.usecases.arxiv import load_from_xml
-from src.usecases.export_articles import create_in_mongo, download_files
+from src.usecases.export_articles import (
+    convert_to_markdown,
+    create_in_mongo,
+    download_files,
+)
+from src.usecases.google import embed_documents
 from src.usecases.import_articles import (
     create_in_relational_db,
     load_data_from_xml,
@@ -12,39 +16,33 @@ from src.usecases.search_text import search_text_index
 
 tqdm.pandas(desc="Loading articles")
 
+
 if __name__ == "__main__":
-    # load XML
     df_xml = load_data_from_xml(Path("data/arxiv_articles.xml"))
 
-    # 1) Download remote PDFs into data/papers/, add 'local_file_path' column
     df_with_local = download_files(df_xml)
-
-    # 2) Make sure the DataFrame's 'file_path' column (or local_file_path)
-    #    is used by the import pipeline. The import pipeline currently
-    #    looks for 'file_path' — ensure it reads the local path.
-    #    If create_in_relational_db looks at 'file_path', copy
-    #    local_file_path -> file_path.
     df_with_local["file_path"] = df_with_local["local_file_path"].fillna(
         df_with_local["file_path"]
     )
 
-    # 3) Insert into relational DB, then export to Mongo
     df_after_sql = create_in_relational_db(df_with_local)
     df_after_mongo = create_in_mongo(df_after_sql)
 
     print("DataFrame after relational DB insertion:")
     print(df_after_mongo.to_string(index=False))
-    with open("data/arxiv_articles.xml", encoding="utf-8") as f:
-        df = (
-            # fetch_arxiv_articles("proton")
-            load_from_xml(f.read())
-            .pipe(create_in_relational_db)
-            .pipe(download_files)
-            .pipe(create_in_mongo)
-        )
-    print("DataFrame after relational DB insertion:")
+
+    df = (
+        load_data_from_xml(Path("data/papers/arxiv_articles_cut.xml"))
+        .pipe(create_in_relational_db)
+        .pipe(download_files)
+        .pipe(convert_to_markdown)
+        .pipe(embed_documents)
+        .pipe(create_in_mongo)
+    )
+
+    print("DataFrame after markdown + embeddings:")
     print(df)
-    #
+
     results = search_text_index("angular")
     print("len results:", len(results))
     for article in results:
