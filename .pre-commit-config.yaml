@@ -34,3 +34,4 @@ repos:
           - types-requests==2.32.4.20250913
           - google-generativeai==0.8.5
           - qdrant-client==1.16.1
+          - types-tqdm==4.67.0.20250809

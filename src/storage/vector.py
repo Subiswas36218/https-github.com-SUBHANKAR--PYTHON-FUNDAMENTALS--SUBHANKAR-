@@ -3,7 +3,11 @@ from qdrant_client.models import Distance, VectorParams
 
 client = QdrantClient(host="localhost", port=6333)
 
-client.create_collection(
-    collection_name="scientific_articles",
-    vectors_config=VectorParams(size=768, distance=Distance.COSINE),
-)
+
+COLLECTION_NAME = "scientific_articles"
+
+if client.collection_exists(collection_name=COLLECTION_NAME):
+    client.create_collection(
+        collection_name=COLLECTION_NAME,
+        vectors_config=VectorParams(size=768, distance=Distance.COSINE),
+    )

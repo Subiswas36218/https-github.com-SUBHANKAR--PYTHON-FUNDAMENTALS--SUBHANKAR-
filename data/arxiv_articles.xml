@@ -1,329 +1,247 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
-  <id>https://arxiv.org/api/WyBPOs+pRgzCTXTMWhtnbcOmk6g</id>
-  <title>arXiv Query: search_query=all:electron&amp;id_list=&amp;start=0&amp;max_results=10</title>
-  <updated>2025-12-02T21:11:53Z</updated>
-  <link href="https://arxiv.org/api/query?search_query=all:electron&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
+  <id>https://arxiv.org/api/LBRGckiMtlTkafo0gpYTPQx7bT8</id>
+  <title>arXiv Query: search_query=all:proton&amp;id_list=&amp;start=0&amp;max_results=10</title>
+  <updated>2025-12-09T21:18:42Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:proton&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
   <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
-  <opensearch:totalResults>175482</opensearch:totalResults>
+  <opensearch:totalResults>36316</opensearch:totalResults>
   <opensearch:startIndex>0</opensearch:startIndex>
   <entry>
-    <id>http://arxiv.org/abs/cond-mat/0011267v1</id>
-    <title>The electronic structure of cuprates from high energy spectroscopy</title>
-    <updated>2000-11-15T16:19:15Z</updated>
-    <link href="https://arxiv.org/abs/cond-mat/0011267v1" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/cond-mat/0011267v1" rel="related" type="application/pdf" title="pdf"/>
-    <summary>  We report studies of the electronic structure and elementary excitations of doped and undoped cuprate chains, ladders and planes. Using high energy spectroscopies such as x-ray absorption, core level photoemission and angle resolved photoemission spectroscopy, important information regarding the charge distribution and hole dynamics can be obtained. The comparison of the experimental data with suitable theoretical models sets constraints on the parameters entering into the model calculations, and offers insight into the important physical quantities governing the electronic structure of these materials. Recurring themes include the importance of the dimensionality of the Cu-O network (1D-&gt;2D) and the crucial role played by the spin-background in determining the dynamics of low-lying excitations in these strongly correlated systems.</summary>
-    <category term="cond-mat.supr-con" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="cond-mat.str-el" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2000-11-15T16:19:15Z</published>
-    <arxiv:comment>J. Electron Spec. Relat. Phenom.: special issue on electron correlation, in press</arxiv:comment>
-    <arxiv:primary_category term="cond-mat.supr-con"/>
-    <arxiv:journal_ref>J. Electron Spectr. Relat. Phenom. 117-118, 203 (2001)</arxiv:journal_ref>
+    <id>http://arxiv.org/abs/1009.2187v1</id>
+    <title>Laboratory Report (LR) to the paper Foundation of an analytical proton beamlet model for inclusion in a general proton dose calculation system [arXiv:1009.0832]</title>
+    <updated>2010-09-11T17:06:21Z</updated>
+    <link href="https://arxiv.org/abs/1009.2187v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1009.2187v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We have developed a model for proton depth dose and lateral distributions based on Monte Carlo calculations (GEANT4) and an integration procedure of the Bethe-Bloch equation (BBE). The model accounts for the transport of primary and secondary protons, the creation of recoil protons and heavy recoil nuclei as well as lateral scattering of these contributions. The buildup, which is experimentally observed in higher energy depth dose curves, is modeled by inclusion of two different origins: 1. Secondary reaction protons with a contribution of ca. 65 % of the buildup (for monoenergetic protons). 2. Landau tails as well as Gaussian type of fluctuations for range straggling effects. All parameters of the model for initially monoenergetic proton beams have been obtained from Monte Carlo calculations or checked by them. Furthermore, there are a few parameters, which can be obtained by fitting the model to measured depth dose curves in order to describe individual characteristics of the beamline - the most important being the initial energy spread. We find that the free parameters of the depth dose model can be predicted for any intermediate energy from a couple of measured curves.</summary>
+    <category term="physics.med-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2010-09-11T17:06:21Z</published>
+    <arxiv:comment>Laboratory Report (preprint) of the article: Foundation of an analytical proton beamlet model for inclusion in a general proton dose calculation system, arXiv:1009.0832</arxiv:comment>
+    <arxiv:primary_category term="physics.med-ph"/>
     <author>
-      <name>Mark S. Golden</name>
+      <name>W. Ulmer</name>
+      <arxiv:affiliation>Varian Medical Systems, Baden, Switzerland</arxiv:affiliation>
+      <arxiv:affiliation>MPI of Biophysical Chemistry, Göttingen, Germany</arxiv:affiliation>
     </author>
     <author>
-      <name>Christian Duerr</name>
-    </author>
-    <author>
-      <name>Andreas Koitzsch</name>
-    </author>
-    <author>
-      <name>Sibylle Legner</name>
-    </author>
-    <author>
-      <name>Zhiwei Hu</name>
-    </author>
-    <author>
-      <name>Sergey Borisenko</name>
-    </author>
-    <author>
-      <name>Martin Knupfer</name>
-    </author>
-    <author>
-      <name>Joerg Fink</name>
+      <name>B. Schaffner</name>
+      <arxiv:affiliation>Varian Medical Systems, Baden, Switzerland</arxiv:affiliation>
+      <arxiv:affiliation>ETH Zürich</arxiv:affiliation>
     </author>
   </entry>
   <entry>
-    <id>http://arxiv.org/abs/cond-mat/0211289v1</id>
-    <title>Surface effects on the electronic energy loss of charged particles entering a metal surface</title>
-    <updated>2002-11-14T15:23:14Z</updated>
-    <link href="https://arxiv.org/abs/cond-mat/0211289v1" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/cond-mat/0211289v1" rel="related" type="application/pdf" title="pdf"/>
-    <summary>  Surface effects on the electronic energy loss of charged particles entering a metal surface are investigated within linear-response theory, in the framework of time-dependent density functional theory. Interesting phenomena occur in the loss spectra originated by the boundary (bregenzung) effect, which is as a consequence of the orthogonality of surface and bulk excitation modes. Our calculations indicate that the presence of a non-abrupt electron-density profile at the surface severely affects the nature of surface excitations, as deduced from comparison with simplified models.</summary>
-    <category term="cond-mat.mtrl-sci" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2002-11-14T15:23:14Z</published>
-    <arxiv:comment>7 pages, 3 figures, to appear in J. Electron Spectrosc</arxiv:comment>
-    <arxiv:primary_category term="cond-mat.mtrl-sci"/>
-    <arxiv:journal_ref>J. Electron Spectrosc. 129, 223 (2003)</arxiv:journal_ref>
+    <id>http://arxiv.org/abs/nucl-ex/0408020v1</id>
+    <title>Two-photon exchange and elastic scattering of electrons/positrons on the proton. (Proposal for an experiment at VEPP-3)</title>
+    <updated>2004-08-18T23:13:32Z</updated>
+    <link href="https://arxiv.org/abs/nucl-ex/0408020v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/nucl-ex/0408020v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>  It has been suggested that two-photon exchange corrections could explain the discrepancy between Rosenbluth extractions of the proton form factors and recent polarization transfer measurements. We propose a precise comparison of electron-proton and positron-proton scattering at Q^2=1.6 GeV^2 to determine if two-photon exchange at moderate Q^2 values is in fact able to explain the discrepancy.</summary>
+    <category term="nucl-ex" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2004-08-18T23:13:32Z</published>
+    <arxiv:comment>13 pages, 10 figures. Proposal for a comparison of electron-proton and positron-proton scattering at VEPP-3</arxiv:comment>
+    <arxiv:primary_category term="nucl-ex"/>
     <author>
-      <name>A. Garcia-Lekue</name>
+      <name>J. Arrington</name>
     </author>
     <author>
-      <name>J. M. Pitarke</name>
+      <name>V. F. Dmitriev</name>
+    </author>
+    <author>
+      <name>R. J. Holt</name>
+    </author>
+    <author>
+      <name>D. M. Nikolenko</name>
+    </author>
+    <author>
+      <name>I. A. Rachek</name>
+    </author>
+    <author>
+      <name>Yu. V. Shestakov</name>
+    </author>
+    <author>
+      <name>V. N. Stibunov</name>
+    </author>
+    <author>
+      <name>D. K. Toporkov</name>
+    </author>
+    <author>
+      <name>H. de Vries</name>
     </author>
   </entry>
   <entry>
-    <id>http://arxiv.org/abs/hep-th/0505137v1</id>
-    <title>A geometrical meaning to the electron mass from breakdown of Lorentz invariance</title>
-    <updated>2005-05-16T12:42:07Z</updated>
-    <link href="https://arxiv.org/abs/hep-th/0505137v1" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/hep-th/0505137v1" rel="related" type="application/pdf" title="pdf"/>
-    <summary>  We discuss the problem of the electron mass in the framework of Deformed Special Relativity (DSR), a generalization of Special Relativity based on a deformed Minkowski space (i.e. a four-dimensional space-time with metric coefficients depending on the energy). We show that, by such a formalism, it is possible to derive the value of the electron mass from the space-time geometry via the experimental knowledge of the parameter of local Lorentz invariance breakdown, and of the Minkowskian threshold energy $E_{0,em}$ for the electromagnetic interaction. We put forward the suggestion that mass generation can be related, in DSR, to the possible dependence of mass on the metric background (relativity of mass).</summary>
+    <id>http://arxiv.org/abs/0912.4962v1</id>
+    <title>The proton gyromagnetic g-factor: an electromagnetic model</title>
+    <updated>2009-12-25T12:49:28Z</updated>
+    <link href="https://arxiv.org/abs/0912.4962v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/0912.4962v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>  So far, the Standard Model of Elementary Particles has not succeeded getting a trustworthy account of the proton spin, which remains an enigma. This hindrance is known as the proton spin crisis, owing to the experimental evidence already from 1988 suggesting that little or none of the proton spin would come from the spin of the quarks. This prompted theorists to a flood of guessworks about the proton spin. Since it remains unsolved, in the framework of new physics an exploratory approach based on a novel paradigm is proposed, which brings a renewed access to this challenge, through its reciprocal relationship with the g-factor.</summary>
+    <category term="physics.gen-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2009-12-25T12:49:28Z</published>
+    <arxiv:comment>14 pages, 1 figure. Spanish version http://www.terra.es/personal/gsardin/proton-g-spanish.pdf</arxiv:comment>
+    <arxiv:primary_category term="physics.gen-ph"/>
+    <author>
+      <name>G. Sardin</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1606.02159v1</id>
+    <title>Avoiding common pitfalls and misconceptions in extractions of the proton radius</title>
+    <updated>2016-06-07T18:32:01Z</updated>
+    <link href="https://arxiv.org/abs/1606.02159v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1606.02159v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In a series of recent publications, different authors produce a wide range of electron radii when reanalyzing electron proton scattering data. In the light of the proton radius puzzle, this is a most unfortunate situation. However, we find flaws in most analyses that result in radii around 0.84 fm. In this paper, we explain our reasoning and try to illustrate the most common pitfalls.</summary>
+    <category term="nucl-th" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="nucl-ex" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2016-06-07T18:32:01Z</published>
+    <arxiv:comment>Preliminary version as discussion basis for the ECT* workshop on 'The proton radius puzzle', Trento 2016</arxiv:comment>
+    <arxiv:primary_category term="nucl-th"/>
+    <author>
+      <name>Jan C. Bernauer</name>
+    </author>
+    <author>
+      <name>Michael O. Distler</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/0709.3797v2</id>
+    <title>Two-proton radioactivity</title>
+    <updated>2008-04-23T08:35:03Z</updated>
+    <link href="https://arxiv.org/abs/0709.3797v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/0709.3797v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>  In the first part of the present review paper, experimental results which lead to the discovery of two-proton radioactivity are reviewed. Beyond two-proton emission from nuclear ground states, we also discuss experimental studies of two-proton emission from excited states populated either by nuclear beta decay or by inelastic reactions. In the second part, we review the modern theory of two-proton radioactivity. An outlook to future experimental studies and theoretical developments will conclude this review.</summary>
+    <category term="nucl-ex" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="nucl-th" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2007-09-24T15:48:20Z</published>
+    <arxiv:comment>review on two-proton radioactivity, 50 pages, 18 figures</arxiv:comment>
+    <arxiv:primary_category term="nucl-ex"/>
+    <arxiv:journal_ref>Rept.Prog.Phys.71:046301,2008</arxiv:journal_ref>
+    <author>
+      <name>Bertram Blank</name>
+    </author>
+    <author>
+      <name>Marek Ploszajczak</name>
+    </author>
+    <arxiv:doi>10.1088/0034-4885/71/4/046301</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1088/0034-4885/71/4/046301" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2410.23418v2</id>
+    <title>One-proton emission of $^{102}$Sb and its sensitivity to proton-neutron interaction</title>
+    <updated>2025-02-21T18:34:25Z</updated>
+    <link href="https://arxiv.org/abs/2410.23418v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2410.23418v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>One-proton emission from the $^{102}$Sb nucleus is discussed, assuming an inert $^{100}$Sn core and the valence proton and neutron. There are experimentally measured bound states in the $^{100}$Sn-neutron system, whereas no particle-bound $^{100}$Sn-proton state has been observed. With time-dependent three-body calculations, the $1^+$ ground state of $^{102}$Sb is suggested as a possible proton emitter. This conclusion is reached by assuming a weakening effect on the proton-neutron ($pn$) interaction with respect to a bare deuteron. An analogous phenomenon is necessary to reproduce the empirical binding energies of $^{42}$Sc and $^{18}$F. Continuous shift from the unbound to bound regions by changing the $pn$-interaction strength is demonstrated. The lower limit of lifetime is evaluated as $τ\gtrsim 4.4 \times 10^{-18}$ seconds in the no-$pn$-interaction limit. However, the actual lifetime is expected as longer with a finite $pn$ interaction. Observation of a resonant state in $^{102}$Sb and its decay would provide a benchmark of the $pn$-pairing correlation.</summary>
+    <category term="nucl-th" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="nucl-ex" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-10-30T19:49:11Z</published>
+    <arxiv:comment>6 pages, 6 figures, 4 tables. Title is changed: the previous title was "Is $^{102}$Sb particle-bound or a proton emitter?''. Accepted in Phys. Rev. C</arxiv:comment>
+    <arxiv:primary_category term="nucl-th"/>
+    <author>
+      <name>Tomohiro Oishi</name>
+    </author>
+    <author>
+      <name>Masaaki Kimura</name>
+    </author>
+    <author>
+      <name>Lorenzo Fortunato</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2309.17232v3</id>
+    <title>Zemach and Friar radii of the proton and neutron from lattice QCD</title>
+    <updated>2024-07-18T07:27:08Z</updated>
+    <link href="https://arxiv.org/abs/2309.17232v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2309.17232v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present the first lattice-QCD result for the Zemach and Friar radii of the proton and neutron. Our calculation includes both quark-connected and -disconnected diagrams and assesses all sources of systematic uncertainties arising from excited-state contributions, finite-volume effects and the continuum extrapolation. At the physical point, we obtain for the proton $r_Z^p = ( 1.013 \pm 0.010\ (\mathrm{stat}) \pm 0.012\ (\mathrm{syst}) )~\mathrm{fm}$ and $r_F^p = ( 1.301 \pm 0.012\ (\mathrm{stat}) \pm 0.014\ (\mathrm{syst}) )~\mathrm{fm}$. These numbers suggest small values of the Zemach and Friar radii of the proton, but are compatible with most of the experimental studies.</summary>
+    <category term="hep-lat" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="nucl-th" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-09-29T13:32:34Z</published>
+    <arxiv:comment>13 pages, 2 figures; v2: significantly extended version including, in addition to the Zemach radius of the proton, results for the Friar radius of the proton as well as for the Zemach and Friar radii of the neutron; v3: typos fixed, matches published version</arxiv:comment>
+    <arxiv:primary_category term="hep-lat"/>
+    <arxiv:journal_ref>Phys. Rev. D 110 (2024) 1, L011503</arxiv:journal_ref>
+    <author>
+      <name>Dalibor Djukanovic</name>
+    </author>
+    <author>
+      <name>Georg von Hippel</name>
+    </author>
+    <author>
+      <name>Harvey B. Meyer</name>
+    </author>
+    <author>
+      <name>Konstantin Ottnad</name>
+    </author>
+    <author>
+      <name>Miguel Salg</name>
+    </author>
+    <author>
+      <name>Hartmut Wittig</name>
+    </author>
+    <arxiv:doi>10.1103/PhysRevD.110.L011503</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1103/PhysRevD.110.L011503" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1611.02697v3</id>
+    <title>Calculation of gluon contribution to the proton spin by using the non-perturbative quantization à la Heisenberg</title>
+    <updated>2017-06-01T05:26:01Z</updated>
+    <link href="https://arxiv.org/abs/1611.02697v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1611.02697v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The contribution of crossed gluon fields in flux tubes connecting quarks to the proton spin is calculated. The calculations are performed following non-perturbative Heisenberg's quantization technique. In our approach a proton is considered as consisting of three quarks connected by three flux tubes. The flux tubes contain color longitudinal electric and transversal electric and magnetic fields. The transversal fields causes the appearance of the angular momentum density. The dimensionless relation between the angular momentum and the mass of the gluon fields is obtained. The contribution to proton spin from rotating quarks and flux tubes connecting quarks is estimated. Simple numerical relation between the proton mass, the speed of light and the proton radius, which is of the same order as the Planck constant, is discussed.</summary>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
     <category term="hep-th" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="gr-qc" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2005-05-16T12:42:07Z</published>
-    <arxiv:comment>15 pages. To be published in the monography "What is electron?", Apeiron (2005)</arxiv:comment>
-    <arxiv:primary_category term="hep-th"/>
-    <arxiv:journal_ref>"What is electron?", V. M. Simulik (ed.), Apeiron (2005)</arxiv:journal_ref>
+    <published>2016-11-08T12:32:34Z</published>
+    <arxiv:comment>essential changes in the text: mechanism creating angular momentum contribution from gluon fields to the proton spin is modified</arxiv:comment>
+    <arxiv:primary_category term="hep-ph"/>
     <author>
-      <name>Fabio Cardone</name>
+      <name>Vladimir Dzhunushaliev</name>
     </author>
-    <author>
-      <name>Alessio Marrani</name>
-    </author>
-    <author>
-      <name>Roberto Mignani</name>
-    </author>
+    <arxiv:doi>10.1134/S1547477117060152</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1134/S1547477117060152" title="doi"/>
   </entry>
   <entry>
-    <id>http://arxiv.org/abs/1401.3078v2</id>
-    <title>Ultrafast Electron Dynamics in the Topological Insulator Bi2Se3 Studied by Time-Resolved Photoemission Spectroscopy</title>
-    <updated>2014-02-06T18:56:13Z</updated>
-    <link href="https://arxiv.org/abs/1401.3078v2" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/1401.3078v2" rel="related" type="application/pdf" title="pdf"/>
-    <summary>We characterize the topological insulator Bi$_2$Se$_3$ using time- and angle- resolved photoemission spectroscopy. By employing two-photon photoemission, a complete picture of the unoccupied electronic structure from the Fermi level up to the vacuum level is obtained. We demonstrate that the unoccupied states host a second, Dirac surface state which can be resonantly excited by 1.5 eV photons. We then study the ultrafast relaxation processes following optical excitation. We find that they culminate in a persistent non-equilibrium population of the first Dirac surface state, which is maintained by a meta-stable population of the bulk conduction band. Finally, we perform a temperature-dependent study of the electron-phonon scattering processes in the conduction band, and find the unexpected result that their rates decrease with increasing sample temperature. We develop a model of phonon emission and absorption from a population of electrons, and show that this counter-intuitive trend is the natural consequence of fundamental electron-phonon scattering processes. This analysis serves as an important reminder that the decay rates extracted by time-resolved photoemission are not in general equal to single electron scattering rates, but include contributions from filling and emptying processes from a continuum of states.</summary>
-    <category term="cond-mat.mtrl-sci" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="cond-mat.mes-hall" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2014-01-14T06:16:36Z</published>
-    <arxiv:comment>In Press: Journal of Electron Spectroscopy &amp; Related Phenomena (special issue on 2-photon photoemission spectroscopy)</arxiv:comment>
-    <arxiv:primary_category term="cond-mat.mtrl-sci"/>
-    <arxiv:journal_ref>J. Electron Spectrosc. Relat. Phenom. 195, 249 (2014)</arxiv:journal_ref>
+    <id>http://arxiv.org/abs/1707.05592v2</id>
+    <title>Symmetric cumulants as a probe of the proton substructure at LHC energies</title>
+    <updated>2018-01-08T09:42:43Z</updated>
+    <link href="https://arxiv.org/abs/1707.05592v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1707.05592v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present a systematic study of the normalized symmetric cumulants, NSC(n,m), at the eccentricity level in proton-proton interactions at $\sqrt s\!=\! 13$ TeV within a wounded hot spot approach. We focus our attention on the influence of spatial correlations between the proton constituents, in our case gluonic hot spots, on this observable. We notice that the presence of short-range repulsive correlations between the hot spots systematically decreases the values of NSC(2,3) and NSC(2,4) in mid-to-ultra central collisions while increases them in peripheral interactions. In the case of NSC(2,3) we find that, as suggested by data, an anti-correlation of $\varepsilon_2$ and $\varepsilon_3$ in ultra-central collisions, i.e. NSC(2,3)$&lt;0$, is possible within the correlated scenario while it never occurs without correlations. We attribute this fact to the decisive role of correlations on enlarging the probability of interaction topologies that reduce the value of NSC(2,3) and, eventually, make it negative. Further, we explore the dependence of our conclusions on the values of the hot spot radius and the repulsive core distance. Our results add evidence to the idea that considering spatial correlations between the subnucleonic degrees of freedom of the proton may have a strong impact on the initial state properties of proton-proton interactions [1].</summary>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="hep-ex" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="nucl-th" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2017-07-18T12:55:48Z</published>
+    <arxiv:comment>9 pages, 8 figures. New section on the number of subnucleonic constituents of the proton added. Accepted for publication in PLB</arxiv:comment>
+    <arxiv:primary_category term="hep-ph"/>
     <author>
-      <name>Jonathan A. Sobota</name>
+      <name>Javier L. Albacete</name>
     </author>
     <author>
-      <name>Shuolong Yang</name>
+      <name>Hannah Petersen</name>
     </author>
     <author>
-      <name>Dominik Leuenberger</name>
+      <name>Alba Soto-Ontoso</name>
     </author>
-    <author>
-      <name>Alexander F. Kemper</name>
-    </author>
-    <author>
-      <name>James G. Analytis</name>
-    </author>
-    <author>
-      <name>Ian R. Fisher</name>
-    </author>
-    <author>
-      <name>Patrick S. Kirchmann</name>
-    </author>
-    <author>
-      <name>Thomas P. Devereaux</name>
-    </author>
-    <author>
-      <name>Zhi-Xun Shen</name>
-    </author>
-    <arxiv:doi>10.1016/j.elspec.2014.01.005</arxiv:doi>
-    <link rel="related" href="https://doi.org/10.1016/j.elspec.2014.01.005" title="doi"/>
+    <arxiv:doi>10.1016/j.physletb.2018.01.011</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1016/j.physletb.2018.01.011" title="doi"/>
   </entry>
   <entry>
-    <id>http://arxiv.org/abs/1711.09828v1</id>
-    <title>Electronic and magnetic properties of the graphene densely decorated with 3d metallic adatoms</title>
-    <updated>2017-11-27T16:56:22Z</updated>
-    <link href="https://arxiv.org/abs/1711.09828v1" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/1711.09828v1" rel="related" type="application/pdf" title="pdf"/>
-    <summary>The electronic properties of graphene decorated with Ni, Co, Cu and Zn adatoms is studied with the density functional theory approach. Within the analysis the spin-orbit interaction is taken into account. We focus on the case when the indicated $3d$ metallic adatoms form a perfect, close-packed single-atomic layer above the graphene surface. The two configurations are examined, namely the adatoms in the on-top, and the hollow positions on graphene. First, we verify that the metallic adatoms in the close-packed structure do not form a covalent bonds with the graphene substrate. However, due to the proximity of the metallic adatoms to the graphene, the charge transfer from the adatom layer to the graphene takes place, and in consequence the graphene becomes $n$-doped. The observed charge transfer results from the arising hybridization between the graphene $2p$ and transition metal $3d$ orbitals. The proximity of metallic adatoms modifies the magnetic state of the graphene. This effect is especially pronounced for the decoration with magnetic atoms, when the magnetic moments on the graphene sublattices are induced. The analysis of the band structure demonstrates that the charge transfer, as well as the induced magnetism on graphene, modify the graphene electronic properties near high symmetry points, especially the Dirac cones. The presence of the metallic adatoms breaks graphene $K-K^{'}$ symmetry and splits the bands due to the exchange coupling. We show that for the hollow configuration the gap opening arises at the $K(K^{'})$-point due to the Rashba-like spin-orbit interaction, while in the case of the on-top configuration the energy gap opens mainly due to the staggered potential. We also mapped the parameters of an effective Hamiltonian on the results obtained with the density functional theory approach.</summary>
-    <category term="physics.app-ph" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2017-11-27T16:56:22Z</published>
-    <arxiv:primary_category term="physics.app-ph"/>
-    <arxiv:journal_ref>Electron. Struct.1 015006 (2019)</arxiv:journal_ref>
+    <id>http://arxiv.org/abs/hep-ph/0111240v1</id>
+    <title>Proton spin structure and the axial U(1) problem</title>
+    <updated>2001-11-20T08:21:43Z</updated>
+    <link href="https://arxiv.org/abs/hep-ph/0111240v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/hep-ph/0111240v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>  We emphasise the relation between the spin structure of the proton and the axial U(1) problem. New experiments motivated by the proton spin problem which could shed light on the nature of U(1) symmetry breaking in QCD are discussed.</summary>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2001-11-20T08:21:43Z</published>
+    <arxiv:comment>Invited talk at the Workshop on the Spin Structure of the Proton and Polarized Collider Physics, Trento (July 23-28, 2001), 6 pages, 1 figure</arxiv:comment>
+    <arxiv:primary_category term="hep-ph"/>
+    <arxiv:journal_ref>Nucl.Phys.Proc.Suppl. 105 (2002) 56-61</arxiv:journal_ref>
     <author>
-      <name>Malgorzata Wawrzyniak-Adamczewska</name>
+      <name>Steven D. Bass</name>
     </author>
-    <arxiv:doi>10.1088/2516-1075/aade6</arxiv:doi>
-    <link rel="related" href="https://doi.org/10.1088/2516-1075/aade6" title="doi"/>
-  </entry>
-  <entry>
-    <id>http://arxiv.org/abs/cond-mat/0310718v2</id>
-    <title>Effect of discrete impurities on electron transport in ultra-short MOSFET using 3D Monte Carlo simulation</title>
-    <updated>2004-02-23T12:58:55Z</updated>
-    <link href="https://arxiv.org/abs/cond-mat/0310718v2" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/cond-mat/0310718v2" rel="related" type="application/pdf" title="pdf"/>
-    <summary>  This paper discusses the influence of the channel impurity distribution on the transport and the drive current in short-gate MOSFET. In this purpose, a careful description of electron-ion interaction suitable for the case of discrete impurities has been implemented in a 3D particle Monte Carlo simulator. This transport model is applied to the investigation of 50 nm MOSFET operation. The results show that a small change in the number of doping impurities or in the position of a single discrete impurity in the inversion layer may significantly influence the drain current. This effect is not only related to threshold voltage fluctuations but also to variations in transport properties in the inversion layer, especially at high drain voltage. The results are analyzed in terms of local fluctuations of electron velocity and current density. In a set of fifteen simulated devices the drive current Ion, determined at VGS = VDS = 0.6 V, is found to vary in a range of 23% according to the position of channel impurities.</summary>
-    <category term="cond-mat.mes-hall" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2003-10-30T08:51:58Z</published>
-    <arxiv:comment>31 pages, 13 figures, revised version: discussions and references added, to be published in IEEE Trans. Electron. Devices</arxiv:comment>
-    <arxiv:primary_category term="cond-mat.mes-hall"/>
-    <arxiv:journal_ref>IEEE Trans. Electron Devices 51 (5), 749-756 (2004)</arxiv:journal_ref>
-    <author>
-      <name>P. Dollfus</name>
-    </author>
-    <author>
-      <name>A. Bournel</name>
-    </author>
-    <author>
-      <name>S. Galdin</name>
-    </author>
-    <author>
-      <name>S. Barraud</name>
-    </author>
-    <author>
-      <name>P. Hesto</name>
-    </author>
-    <arxiv:doi>10.1109/TED.2004.826844</arxiv:doi>
-    <link rel="related" href="https://doi.org/10.1109/TED.2004.826844" title="doi"/>
-  </entry>
-  <entry>
-    <id>http://arxiv.org/abs/2102.03929v1</id>
-    <title>A flexible 300 mm integrated Si MOS platform for electron- and hole-spin qubits exploration</title>
-    <updated>2021-02-07T21:56:59Z</updated>
-    <link href="https://arxiv.org/abs/2102.03929v1" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/2102.03929v1" rel="related" type="application/pdf" title="pdf"/>
-    <summary>We report on a flexible 300 mm process that optimally combines optical and electron beam lithography to fabricate silicon spin qubits. It enables on-the-fly layout design modifications while allowing devices with either n- or p-type ohmic implants, a pitch smaller than 100 nm, and uniform critical dimensions down to 30 nm with a standard deviation ~ 1.6 nm. Various n- and p-type qubits are characterized in a dilution refrigerator at temperatures ~ 10 mK. Electrical measurements demonstrate well-defined quantum dots, tunable tunnel couplings, and coherent spin control, which are essential requirements for the implementation of a large-scale quantum processor.</summary>
-    <category term="cond-mat.mes-hall" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="physics.app-ph" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2021-02-07T21:56:59Z</published>
-    <arxiv:comment>2020 IEEE International Electron Devices Meeting (IEDM), December 12-18, 2020</arxiv:comment>
-    <arxiv:primary_category term="cond-mat.mes-hall"/>
-    <arxiv:journal_ref>2020 IEEE International Electron Devices Meeting (IEDM 2020), 38.3.1-38.3.4</arxiv:journal_ref>
-    <author>
-      <name>R. Li</name>
-    </author>
-    <author>
-      <name>N. I. Dumoulin Stuyck</name>
-    </author>
-    <author>
-      <name>S. Kubicek</name>
-    </author>
-    <author>
-      <name>J. Jussot</name>
-    </author>
-    <author>
-      <name>B. T. Chan</name>
-    </author>
-    <author>
-      <name>F. A. Mohiyaddin</name>
-    </author>
-    <author>
-      <name>A. Elsayed</name>
-    </author>
-    <author>
-      <name>M. Shehata</name>
-    </author>
-    <author>
-      <name>G. Simion</name>
-    </author>
-    <author>
-      <name>C. Godfrin</name>
-    </author>
-    <author>
-      <name>Y. Canvel</name>
-    </author>
-    <author>
-      <name>Ts. Ivanov</name>
-    </author>
-    <author>
-      <name>L. Goux</name>
-    </author>
-    <author>
-      <name>B. Govoreanu</name>
-    </author>
-    <author>
-      <name>I. P. Radu</name>
-    </author>
-  </entry>
-  <entry>
-    <id>http://arxiv.org/abs/1912.06461v1</id>
-    <title>A sparse spin qubit array with integrated control electronics</title>
-    <updated>2019-12-13T13:18:45Z</updated>
-    <link href="https://arxiv.org/abs/1912.06461v1" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/1912.06461v1" rel="related" type="application/pdf" title="pdf"/>
-    <summary>Current implementations of quantum computers suffer from large numbers of control lines per qubit, becoming unmanageable with system scale up. Here, we discuss a sparse spin-qubit architecture featuring integrated control electronics significantly reducing the off-chip wire count. This quantum-classical hardware integration closes the feasibility gap towards a CMOS quantum computer.</summary>
-    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="cond-mat.mes-hall" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="physics.app-ph" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2019-12-13T13:18:45Z</published>
-    <arxiv:comment>Paper accompanying an invited talk at the 2019 IEEE International Electron Devices Meeting (IEDM), December 7-11, 2019</arxiv:comment>
-    <arxiv:primary_category term="quant-ph"/>
-    <arxiv:journal_ref>2019 IEEE International Electron Devices Meeting (IEDM), 31.4. 1-31.4. 4 (2020)</arxiv:journal_ref>
-    <author>
-      <name>Jelmer M. Boter</name>
-    </author>
-    <author>
-      <name>Juan P. Dehollain</name>
-    </author>
-    <author>
-      <name>Jeroen P. G. van Dijk</name>
-    </author>
-    <author>
-      <name>Toivo Hensgens</name>
-    </author>
-    <author>
-      <name>Richard Versluis</name>
-    </author>
-    <author>
-      <name>James S. Clarke</name>
-    </author>
-    <author>
-      <name>Menno Veldhorst</name>
-    </author>
-    <author>
-      <name>Fabio Sebastiano</name>
-    </author>
-    <author>
-      <name>Lieven M. K. Vandersypen</name>
-    </author>
-    <arxiv:doi>10.1109/IEDM19573.2019.8993570</arxiv:doi>
-    <link rel="related" href="https://doi.org/10.1109/IEDM19573.2019.8993570" title="doi"/>
-  </entry>
-  <entry>
-    <id>http://arxiv.org/abs/cond-mat/0107042v1</id>
-    <title>From Mott insulator to overdoped superconductor: Evolution of the electronic structure of cuprates studied by ARPES</title>
-    <updated>2001-07-02T23:08:47Z</updated>
-    <link href="https://arxiv.org/abs/cond-mat/0107042v1" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/cond-mat/0107042v1" rel="related" type="application/pdf" title="pdf"/>
-    <summary>  We review our angle-resolved photoemission spectroscopy (ARPES) results on different layered oxide superconductors, and on their insulating parent compounds. The low energy excitations are discussed with emphasis on some of the most recent issues, such as the Fermi surface and remnant Fermi surface, the pseudogap and d-wave-like dispersion, and lastly the signatures in the ARPES spectra of multiple electronic components, many body effects, and the superfluid density. We will focus on systematic changes in the electronic structure which may be relevant to the development of a comprehensive picture for the evolution from Mott insulators to overdoped superconductors.</summary>
-    <category term="cond-mat.str-el" scheme="http://arxiv.org/schemas/atom"/>
-    <category term="cond-mat.supr-con" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2001-07-02T23:08:47Z</published>
-    <arxiv:comment>Review article for special issue on correlated electron systems (24 pages, 21 embedded figures). Find a high-resolution copy at http://www.stanford.edu/~damascel/ARPES_JESRP.pdf</arxiv:comment>
-    <arxiv:primary_category term="cond-mat.str-el"/>
-    <arxiv:journal_ref>J. Electron Spectr. Relat. Phenom. 117-118, 165 (2001)</arxiv:journal_ref>
-    <author>
-      <name>A. Damascelli</name>
-      <arxiv:affiliation>Stanford University</arxiv:affiliation>
-    </author>
-    <author>
-      <name>D. H. Lu</name>
-      <arxiv:affiliation>Stanford University</arxiv:affiliation>
-    </author>
-    <author>
-      <name>Z. -X. Shen</name>
-      <arxiv:affiliation>Stanford University</arxiv:affiliation>
-    </author>
-  </entry>
-  <entry>
-    <id>http://arxiv.org/abs/1201.2815v2</id>
-    <title>Radiation of the electron bunch moving in non-regular fields</title>
-    <updated>2012-03-07T13:06:45Z</updated>
-    <link href="https://arxiv.org/abs/1201.2815v2" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/1201.2815v2" rel="related" type="application/pdf" title="pdf"/>
-    <summary>The problem of spontaneous radiation of the electron bunch grazing into a charged metallic surface with randomly distributed needle shaped asperities is considered. Distances between two neighboring asperities have been described by gamma distribution. Being repealed by highly charged asperities the electrons of the bunch move along non-regular periodical trajectories in the planes parallel to the metallic surface. The spatial periods of the trajectories are random quantities which are described by the same gamma distribution. The radiation characteristics of the bunch have been obtained. It is shown that the angular distributions of the number of photons radiated from the bunch and from a single electron are the same but the frequency distribution of the bunch is being drastically changed at the hard frequency region. It is proposed to develop a new non-destructive method for investigation of the metal surface roughness. The frequency distribution of the number of photons radiated under the zero angle has been obtained. That allows to find the gain expression of the stimulated radiation.</summary>
-    <category term="physics.class-ph" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2012-01-12T16:19:16Z</published>
-    <arxiv:comment>Presented during the international conference "Electron, Positron, Neutron and X-ray Scattering Under External Influences - 2011". Two pages long thesis is published in the abstract book. 11 pages, 5 figures</arxiv:comment>
-    <arxiv:primary_category term="physics.class-ph"/>
-    <arxiv:journal_ref>Proceedings of International Conference On Electron, Positron, Neutron and X-Ray Scattering Under External Influences, pp. 79-84, 2012</arxiv:journal_ref>
-    <author>
-      <name>Lekdar Gevorgian</name>
-    </author>
-    <author>
-      <name>Valeri Vardanyan</name>
-    </author>
+    <arxiv:doi>10.1016/S0920-5632(01)01951-X</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1016/S0920-5632(01)01951-X" title="doi"/>
   </entry>
 </feed>

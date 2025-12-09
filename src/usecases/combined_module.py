@@ -2,12 +2,13 @@ from pathlib import Path
 
 from tqdm.auto import tqdm
 
+from src.usecases.arxiv import fetch_arxiv_articles
+from src.usecases.embed import embed_documents
 from src.usecases.export_articles import (
     convert_to_markdown,
     create_in_mongo,
     download_files,
 )
-from src.usecases.google import embed_documents
 from src.usecases.import_articles import (
     create_in_relational_db,
     load_data_from_xml,
@@ -32,7 +33,8 @@ if __name__ == "__main__":
     print(df_after_mongo.to_string(index=False))
 
     df = (
-        load_data_from_xml(Path("data/papers/arxiv_articles_cut.xml"))
+        fetch_arxiv_articles("proton")
+        # load_data_from_xml(Path("data/papers/arxiv_articles_cut.xml"))
         .pipe(create_in_relational_db)
         .pipe(download_files)
         .pipe(convert_to_markdown)
