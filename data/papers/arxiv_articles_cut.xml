@@ -1,29 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
-  <id>https://arxiv.org/api/WyBPOs+pRgzCTXTMWhtnbcOmk6g</id>
-  <title>arXiv Query: search_query=all:electron&amp;id_list=&amp;start=0&amp;max_results=10</title>
-  <updated>2025-12-02T21:11:53Z</updated>
-  <link href="https://arxiv.org/api/query?search_query=all:electron&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
+  <id>https://arxiv.org/api/LBRGckiMtlTkafo0gpYTPQx7bT8</id>
+  <title>arXiv Query: search_query=all:proton&amp;id_list=&amp;start=0&amp;max_results=10</title>
+  <updated>2025-12-09T22:52:30Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:proton&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
   <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
-  <opensearch:totalResults>175482</opensearch:totalResults>
+  <opensearch:totalResults>36316</opensearch:totalResults>
   <opensearch:startIndex>0</opensearch:startIndex>
 <entry>
-    <id>http://arxiv.org/abs/1201.2815v2</id>
-    <title>Radiation of the electron bunch moving in non-regular fields</title>
-    <updated>2012-03-07T13:06:45Z</updated>
-    <link href="https://arxiv.org/abs/1201.2815v2" rel="alternate" type="text/html"/>
-    <link href="https://arxiv.org/pdf/1201.2815v2" rel="related" type="application/pdf" title="pdf"/>
-    <summary>The problem of spontaneous radiation of the electron bunch grazing into a charged metallic surface with randomly distributed needle shaped asperities is considered. Distances between two neighboring asperities have been described by gamma distribution. Being repealed by highly charged asperities the electrons of the bunch move along non-regular periodical trajectories in the planes parallel to the metallic surface. The spatial periods of the trajectories are random quantities which are described by the same gamma distribution. The radiation characteristics of the bunch have been obtained. It is shown that the angular distributions of the number of photons radiated from the bunch and from a single electron are the same but the frequency distribution of the bunch is being drastically changed at the hard frequency region. It is proposed to develop a new non-destructive method for investigation of the metal surface roughness. The frequency distribution of the number of photons radiated under the zero angle has been obtained. That allows to find the gain expression of the stimulated radiation.</summary>
-    <category term="physics.class-ph" scheme="http://arxiv.org/schemas/atom"/>
-    <published>2012-01-12T16:19:16Z</published>
-    <arxiv:comment>Presented during the international conference "Electron, Positron, Neutron and X-ray Scattering Under External Influences - 2011". Two pages long thesis is published in the abstract book. 11 pages, 5 figures</arxiv:comment>
-    <arxiv:primary_category term="physics.class-ph"/>
-    <arxiv:journal_ref>Proceedings of International Conference On Electron, Positron, Neutron and X-Ray Scattering Under External Influences, pp. 79-84, 2012</arxiv:journal_ref>
+    <id>http://arxiv.org/abs/hep-ph/0111240v1</id>
+    <title>Proton spin structure and the axial U(1) problem</title>
+    <updated>2001-11-20T08:21:43Z</updated>
+    <link href="https://arxiv.org/abs/hep-ph/0111240v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/hep-ph/0111240v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>  We emphasise the relation between the spin structure of the proton and the axial U(1) problem. New experiments motivated by the proton spin problem which could shed light on the nature of U(1) symmetry breaking in QCD are discussed.</summary>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2001-11-20T08:21:43Z</published>
+    <arxiv:comment>Invited talk at the Workshop on the Spin Structure of the Proton and Polarized Collider Physics, Trento (July 23-28, 2001), 6 pages, 1 figure</arxiv:comment>
+    <arxiv:primary_category term="hep-ph"/>
+    <arxiv:journal_ref>Nucl.Phys.Proc.Suppl. 105 (2002) 56-61</arxiv:journal_ref>
     <author>
-      <name>Lekdar Gevorgian</name>
+      <name>Steven D. Bass</name>
     </author>
-    <author>
-      <name>Valeri Vardanyan</name>
-    </author>
+    <arxiv:doi>10.1016/S0920-5632(01)01951-X</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1016/S0920-5632(01)01951-X" title="doi"/>
   </entry>
 </feed>

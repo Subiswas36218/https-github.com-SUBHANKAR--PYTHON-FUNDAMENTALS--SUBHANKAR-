@@ -57,24 +57,25 @@ def _chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) -> list[s
     return chunks
 
 
+def _empty_embedding_series() -> pd.Series:
+    """Helper: consistent empty result."""
+    return pd.Series(
+        {
+            "embedding": None,
+            "chunk_texts": None,
+            "chunk_embeddings": None,
+        },
+        index=["embedding", "chunk_texts", "chunk_embeddings"],
+    )
+
+
 def embed_article(row: pd.Series) -> pd.Series:
-    """
-    Take one row with 'md_text' and 'arxiv_id' and return a Series with:
-      - 'chunk_texts'      → list[str]         (subset of chunks used)
-      - 'chunk_embeddings' → np.ndarray       (shape [n_chunks, 768])
-      - 'embedding'        → list[float] | None  (mean-pooled embedding)
-    Handles quota errors (429) gracefully and stops further API calls
-    once quota is hit.
-    """
     global _EMBEDDING_DISABLED
 
     if _EMBEDDING_DISABLED:
         return pd.Series(
-            {
-                "chunk_texts": None,
-                "chunk_embeddings": None,
-                "embedding": None,
-            }
+            {"chunk_texts": None, "embeddings": None},
+            index=["chunk_texts", "embeddings"],
         )
 
     arxiv_id = str(row.get("arxiv_id", "") or "")
@@ -83,15 +84,12 @@ def embed_article(row: pd.Series) -> pd.Series:
     if not md_text:
         LOG.warning("embed_article: empty md_text for row %s", arxiv_id or "<no-id>")
         return pd.Series(
-            {
-                "chunk_texts": None,
-                "chunk_embeddings": None,
-                "embedding": None,
-            }
+            {"chunk_texts": None, "embeddings": None},
+            index=["chunk_texts", "embeddings"],
         )
 
     chunks = _chunk_text(md_text, chunk_size=1000, overlap=200)
-    avg_len = sum(len(c) for c in chunks) / max(len(chunks), 1)
+    avg_len = sum(len(c) for c in chunks) / max(len(chunks), 2)
     LOG.info(
         "embed_article: %s → %d chunks, avg length %.1f chars",
         arxiv_id or "<no-id>",
@@ -102,10 +100,7 @@ def embed_article(row: pd.Series) -> pd.Series:
     client = get_client()
 
     try:
-        # For now, embed only the first few chunks to stay under limits.
-        # You can tune this.
         contents = chunks[:2]
-
         result = client.models.embed_content(
             model="gemini-embedding-001",
             contents=contents,
@@ -115,35 +110,17 @@ def embed_article(row: pd.Series) -> pd.Series:
             ),
         )
 
-        if not getattr(result, "embeddings", None):
-            LOG.error(
-                "embed_article: no embeddings returned for %s", arxiv_id or "<no-id>"
-            )
-            return pd.Series(
-                {
-                    "chunk_texts": contents,
-                    "chunk_embeddings": None,
-                    "embedding": None,
-                }
-            )
-
-        chunk_embeddings = np.array(
-            [np.array(e.values, dtype=float) for e in result.embeddings], dtype=float
+        embeddings = np.array(
+            [np.array(embedding.values) for embedding in result.embeddings or []],
+            dtype=float,
         )
-
-        # Mean-pool chunk embeddings into a single vector for the article.
-        pooled: np.ndarray = chunk_embeddings.mean(axis=0)
-        embedding_list: list[float] = pooled.tolist()
 
         return pd.Series(
-            {
-                "chunk_texts": contents,
-                "chunk_embeddings": chunk_embeddings,
-                "embedding": embedding_list,
-            }
+            {"chunk_texts": contents, "embeddings": embeddings},
+            index=["chunk_texts", "embeddings"],
         )
 
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         msg = str(exc)
         LOG.error(
             "embed_article: failed to embed row %s: %s", arxiv_id or "<no-id>", msg
@@ -152,37 +129,28 @@ def embed_article(row: pd.Series) -> pd.Series:
         if "RESOURCE_EXHAUSTED" in msg or "429" in msg:
             LOG.error(
                 "embed_article: quota / rate limit hit, "
-                "disabling further embedding calls in this run.",
+                "disabling further embedding calls in this run."
             )
             _EMBEDDING_DISABLED = True
 
         return pd.Series(
-            {
-                "chunk_texts": None,
-                "chunk_embeddings": None,
-                "embedding": None,
-            }
+            {"chunk_texts": None, "embeddings": None},
+            index=["chunk_texts", "embeddings"],
         )
 
 
 def embed_documents(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Apply embed_article to each row and append:
-      - 'chunk_texts'
-      - 'chunk_embeddings'
-      - 'embedding'
+    Apply embed_article to each row and append 'chunk_texts' and 'embeddings' columns.
     """
-    embedding_df = df.progress_apply(embed_article, axis=1)
+    embedding_df = df.apply(embed_article, axis=1)
     out = pd.concat(
         [df.reset_index(drop=True), embedding_df.reset_index(drop=True)],
         axis=1,
     )
 
-    if "embedding" in out.columns:
-        num_ok = out["embedding"].notna().sum()
-        num_total = len(out)
-        LOG.info("embed_documents: %d/%d rows have embeddings", num_ok, num_total)
-    else:
-        LOG.warning("embed_documents: 'embedding' column missing in output")
+    num_ok = out["embeddings"].notna().sum()
+    num_total = len(out)
+    LOG.info("embed_documents: %d/%d rows have embeddings", num_ok, num_total)
 
     return out
