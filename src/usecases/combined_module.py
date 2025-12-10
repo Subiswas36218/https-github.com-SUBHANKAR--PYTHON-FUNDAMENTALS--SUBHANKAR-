@@ -2,10 +2,10 @@ from pathlib import Path
 
 from tqdm.auto import tqdm
 
-from src.usecases.embed import embed_documents
+from src.usecases.arxiv import fetch_arxiv_articles
+from src.usecases.embed import chunk_documents, embed_documents
 from src.usecases.export_articles import (
     convert_to_markdown,
-    create_in_mongo,
     download_files,
 )
 from src.usecases.import_articles import (
@@ -13,7 +13,7 @@ from src.usecases.import_articles import (
     load_data_from_xml,
 )
 from src.usecases.search_text import search_text_index
-from src.usecases.vector import save_to_qdrant
+from src.usecases.vector import check_chunks_in_qdrant
 
 tqdm.pandas(desc="Loading articles")
 
@@ -27,20 +27,20 @@ if __name__ == "__main__":
     )
 
     df_after_sql = create_in_relational_db(df_with_local)
-    df_after_mongo = create_in_mongo(df_after_sql)
 
     print("DataFrame after relational DB insertion:")
-    print(df_after_mongo.to_string(index=False))
 
     df = (
-        # fetch_arxiv_articles("proton")
-        load_data_from_xml(Path("data/papers/arxiv_articles_cut.xml"))
+        # load_data_from_xml(Path("data/papers/arxiv_articles_cut.xml"))
+        fetch_arxiv_articles("proton")
         .pipe(create_in_relational_db)
         .pipe(download_files)
         .pipe(convert_to_markdown)
+        .pipe(chunk_documents)
+        .pipe(check_chunks_in_qdrant)
         .pipe(embed_documents)
-        .pipe(save_to_qdrant)
-        .pipe(create_in_mongo)
+        #  .pipe(save_to_qdrant)
+        #  .pipe(create_in_mongo)
     )
 
     print("DataFrame after markdown + embeddings:")

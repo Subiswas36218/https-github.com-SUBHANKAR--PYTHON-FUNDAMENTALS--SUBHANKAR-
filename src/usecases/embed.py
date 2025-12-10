@@ -34,9 +34,36 @@ def get_client() -> genai.Client:
     return _CLIENT
 
 
-def _chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) -> list[str]:
-    """Split long text into overlapping chunks, trying to break at periods."""
-    text = text or ""
+def _empty_embedding_series() -> pd.Series:
+    """Helper: consistent empty result."""
+    return pd.Series(
+        {
+            "embedding": None,
+        },
+        index=["embedding"],
+    )
+
+
+def apply_chunking(
+    article: pd.Series, chunk_size: int = 1000, overlap: int = 200
+) -> pd.Series:
+    """
+    Split article.md_text into overlapping chunks.
+
+    Returns a Series with:
+      - chunk_text: list[str]
+      - chunk_index: list[int]
+    which will then be exploded by chunk_documents().
+    """
+    text = getattr(article, "md_text", "") or ""
+    text = str(text)
+
+    if not text:
+        return pd.Series(
+            {"chunk_text": [], "chunk_index": []},
+            index=["chunk_text", "chunk_index"],
+        )
+
     start = 0
     chunks: list[str] = []
 
@@ -44,6 +71,7 @@ def _chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) -> list[s
         end = start + chunk_size
         chunk = text[start:end]
 
+        # Try to cut on a sentence boundary if possible
         if end < len(text):
             last_period = chunk.rfind(".")
             if last_period > chunk_size // 2:
@@ -54,103 +82,95 @@ def _chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) -> list[s
         # avoid infinite loop if overlap > chunk_size
         start = max(end - overlap, end)
 
-    return chunks
-
-
-def _empty_embedding_series() -> pd.Series:
-    """Helper: consistent empty result."""
     return pd.Series(
-        {
-            "embedding": None,
-            "chunk_texts": None,
-            "chunk_embeddings": None,
-        },
-        index=["embedding", "chunk_texts", "chunk_embeddings"],
+        [chunks, list(range(len(chunks)))],
+        index=["chunk_text", "chunk_index"],
     )
 
 
-def embed_article(row: pd.Series) -> pd.Series:
+def embed_article(article_chunk: pd.Series) -> pd.Series:
+    """
+    Embed a single chunk row (after explode).
+    Expects:
+      - article_chunk.chunk_text : str
+    Returns:
+      - embedding: np.ndarray
+    """
     global _EMBEDDING_DISABLED
 
     if _EMBEDDING_DISABLED:
-        return pd.Series(
-            {"chunk_texts": None, "embeddings": None},
-            index=["chunk_texts", "embeddings"],
-        )
+        return _empty_embedding_series()
 
-    arxiv_id = str(row.get("arxiv_id", "") or "")
-    md_text = str(row.get("md_text", "") or "").strip()
-
-    if not md_text:
-        LOG.warning("embed_article: empty md_text for row %s", arxiv_id or "<no-id>")
-        return pd.Series(
-            {"chunk_texts": None, "embeddings": None},
-            index=["chunk_texts", "embeddings"],
-        )
-
-    chunks = _chunk_text(md_text, chunk_size=1000, overlap=200)
-    avg_len = sum(len(c) for c in chunks) / max(len(chunks), 2)
-    LOG.info(
-        "embed_article: %s → %d chunks, avg length %.1f chars",
-        arxiv_id or "<no-id>",
-        len(chunks),
-        avg_len,
-    )
-
-    client = get_client()
+    text = getattr(article_chunk, "chunk_text", None)
+    if not text:
+        return _empty_embedding_series()
 
     try:
-        contents = chunks[:2]
+        client = get_client()
         result = client.models.embed_content(
             model="gemini-embedding-001",
-            contents=contents,
+            contents=[text],
             config=types.EmbedContentConfig(
                 output_dimensionality=768,
                 task_type="SEMANTIC_SIMILARITY",
             ),
         )
+    except Exception as exc:  # quota, network, etc.
+        LOG.error("embed_article failed: %s", exc)
+        _EMBEDDING_DISABLED = True
+        return _empty_embedding_series()
 
-        embeddings = np.array(
-            [np.array(embedding.values) for embedding in result.embeddings or []],
-            dtype=float,
-        )
+    if not result.embeddings:
+        return _empty_embedding_series()
 
-        return pd.Series(
-            {"chunk_texts": contents, "embeddings": embeddings},
-            index=["chunk_texts", "embeddings"],
-        )
-
-    except Exception as exc:
-        msg = str(exc)
-        LOG.error(
-            "embed_article: failed to embed row %s: %s", arxiv_id or "<no-id>", msg
-        )
-
-        if "RESOURCE_EXHAUSTED" in msg or "429" in msg:
-            LOG.error(
-                "embed_article: quota / rate limit hit, "
-                "disabling further embedding calls in this run."
-            )
-            _EMBEDDING_DISABLED = True
-
-        return pd.Series(
-            {"chunk_texts": None, "embeddings": None},
-            index=["chunk_texts", "embeddings"],
-        )
+    return pd.Series(
+        [np.array(result.embeddings[0].values, dtype=float)],
+        index=["embedding"],
+    )
 
 
 def embed_documents(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Apply embed_article to each row and append 'chunk_texts' and 'embeddings' columns.
+    Apply embed_article to each row (each row is a chunk) and append 'embedding' column.
     """
+    if df.empty:
+        return df
+
     embedding_df = df.apply(embed_article, axis=1)
+
     out = pd.concat(
         [df.reset_index(drop=True), embedding_df.reset_index(drop=True)],
         axis=1,
     )
 
-    num_ok = out["embeddings"].notna().sum()
+    num_ok = out["embedding"].notna().sum()
     num_total = len(out)
     LOG.info("embed_documents: %d/%d rows have embeddings", num_ok, num_total)
 
     return out
+
+
+def chunk_documents(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Turn each article into multiple chunk rows.
+
+    Input: one row per article, with 'md_text'.
+    Output: multiple rows per article, with columns:
+      - chunk_index (int)
+      - chunk_text  (str)
+    """
+    if df.empty:
+        return df
+
+    chunks = df.apply(apply_chunking, axis=1)
+
+    # concat and explode to get one row per chunk
+    exploded = (
+        pd.concat([df.reset_index(drop=True), chunks.reset_index(drop=True)], axis=1)
+        .explode(["chunk_index", "chunk_text"])
+        .reset_index(drop=True)
+    )
+
+    # drop rows with empty chunk_text
+    exploded = exploded[exploded["chunk_text"].notna() & (exploded["chunk_text"] != "")]
+    return exploded
