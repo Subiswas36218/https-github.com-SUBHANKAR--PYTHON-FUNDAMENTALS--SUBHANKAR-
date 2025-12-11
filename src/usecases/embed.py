@@ -136,7 +136,7 @@ def embed_documents(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return df
 
-    embedding_df = df.apply(embed_article, axis=1)
+    embedding_df = df.progress_apply(embed_article, axis=1)
 
     out = pd.concat(
         [df.reset_index(drop=True), embedding_df.reset_index(drop=True)],
@@ -162,7 +162,7 @@ def chunk_documents(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return df
 
-    chunks = df.apply(apply_chunking, axis=1)
+    chunks = df.progress_apply(apply_chunking, axis=1)
 
     # concat and explode to get one row per chunk
     exploded = (

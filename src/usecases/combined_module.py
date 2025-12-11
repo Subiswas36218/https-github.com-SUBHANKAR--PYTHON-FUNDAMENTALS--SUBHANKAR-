@@ -13,7 +13,7 @@ from src.usecases.import_articles import (
     load_data_from_xml,
 )
 from src.usecases.search_text import search_text_index
-from src.usecases.vector import check_chunks_in_qdrant
+from src.usecases.vector import check_chunks_in_qdrant, save_to_qdrant
 
 tqdm.pandas(desc="Loading articles")
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
         .pipe(chunk_documents)
         .pipe(check_chunks_in_qdrant)
         .pipe(embed_documents)
-        #  .pipe(save_to_qdrant)
+        .pipe(save_to_qdrant)
         #  .pipe(create_in_mongo)
     )
 
